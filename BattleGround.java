@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 public class BattleGround extends JPanel implements ActionListener, KeyListener{
     Timer tm = new Timer(5, this);
-    int humanX = 0, velHumanX = 0, humanY = 0, velHumanY = 0;
-    BufferedImage image;
+    int humanX = 0, velHumanX = 0, humanY = 0, velHumanY = 0, humanHeight = 0, humanWidth = 0;
+    BufferedImage humanImage;
     int width = width();
     int height = height();
     boolean starsReady = false;
@@ -26,15 +26,26 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         
         URL resource = getClass().getResource("HumanShip.png");//get human fighter
         try{
-            image = ImageIO.read(resource);
+            humanImage = ImageIO.read(resource);
         }catch(IOException e){
             System.out.println("This file was improperly installed.\n Resource \'" + resource + "\' not found.");
         }
+        humanHeight = humanImage.getHeight();
+        humanWidth = humanImage.getWidth();
     }
     
     public void actionPerformed(ActionEvent e){
         humanX += velHumanX;
         humanY += velHumanY;
+        if(humanX < -humanWidth){//wrap screen for human player
+            humanX = width - humanWidth;
+        }else if(humanX > width - humanWidth){
+            humanX = -humanWidth;
+        }else if(humanY < -humanHeight){
+            humanY = height - humanHeight;
+        }else if(humanY > height - humanHeight){
+            humanY = -humanHeight;
+        }
         repaint();
     }
     
@@ -62,23 +73,24 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
     
     public void paintComponent(Graphics g){
         super.paintComponent(g);
+        g.setColor(Color.BLACK);
         g.fillRect(0, 0, width, height);        
         if(!starsReady){//generate stars
             g.setColor(Color.WHITE);
-            for(int i = 0; i <= 29; i++){//randomly generate stars
+            for(int i = 0; i <= (width/3); i++){//randomly generate stars
                 Random fromage = new Random();
-                starX.add(fromage.nextInt(width + 1));
-                starY.add(fromage.nextInt(height + 1));
+                starX.add(fromage.nextInt(width));
+                starY.add(fromage.nextInt(height));
                 g.fillOval(starX.get(i), starY.get(i), 5, 5);
             }
             starsReady = true;
         }else{
             g.setColor(Color.WHITE);
-            for(int i = 0; i <= 29; i++){
+            for(int i = 0; i <= width/3; i++){
                 g.fillOval(starX.get(i), starY.get(i), 5, 5);                
             }
         }
-        g.drawImage(image, humanX, humanY, null);//draw human ship
+        g.drawImage(humanImage, humanX, humanY, null);//draw human ship
     }
     
     public static void main(String[] args){
