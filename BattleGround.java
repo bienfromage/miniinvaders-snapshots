@@ -1,13 +1,13 @@
 //Human = player 1 Alien = player 2
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
-import java.io.*;
-import java.net.*;
-import javax.swing.*;
-import javax.imageio.*;
-import java.util.Random;
-import java.util.ArrayList;
+        import java.awt.event.*;
+        import java.awt.image.*;
+        import java.io.*;
+        import java.net.*;
+        import javax.swing.*;
+        import javax.imageio.*;
+        import java.util.Random;
+        import java.util.ArrayList;
 
 public class BattleGround extends JPanel implements ActionListener, KeyListener{
     Timer tm = new Timer(5, this);
@@ -20,33 +20,36 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
     boolean starsReady = false;
     ArrayList<Integer> starX = new ArrayList<Integer>();
     ArrayList<Integer> starY = new ArrayList<Integer>();
-    
+    ArrayList<Integer> bulletX = new ArrayList<Integer>();
+    ArrayList<Integer> bulletY = new ArrayList<Integer>();
+    ArrayList<Integer> bulletVelX = new ArrayList<Integer>();
+    ArrayList<Integer> bulletVelY = new ArrayList<Integer>();
     public BattleGround(){
         tm.start();
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
-        
+
         URL resource = getClass().getResource("HumanShip.png");//get human fighter
         try{
             humanImage = ImageIO.read(resource);
         }catch(IOException e){
             System.out.println("This file was improperly installed.\nResource \'" + resource + "\' not found.");
         }
-        
+
         URL resource2 = getClass().getResource("AlienShip.png");//get alien fighter
         try{
             alienImage = ImageIO.read(resource2);
         }catch(IOException e){
-            System.out.println("This file was imporoperly installed.\nResource \'" + resource2 + "\' not found.");
+            System.out.println("This file was improperly installed.\nResource \'" + resource2 + "\' not found.");
         }
-        
+
         humanHeight = humanImage.getHeight();
         humanWidth = humanImage.getWidth();
         alienHeight = alienImage.getHeight();
         alienWidth = alienImage.getWidth();
     }
-    
+
     public void actionPerformed(ActionEvent e){
         humanX += velHumanX;
         humanY += velHumanY;
@@ -72,10 +75,10 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         }
         repaint();
     }
-    
+
     public void keyPressed(KeyEvent e){
         int c = e.getKeyCode();
-        
+
         //human controls
         if(c == KeyEvent.VK_LEFT){//if left arrow key pressed
             velHumanX = -2;
@@ -93,6 +96,9 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
             velHumanX = 0;
             velHumanY = 2;
         }
+        if(c == 16){//shift to fire
+            fire(1);
+        }
         //alien controls
         if(c == 65){//a
             velAlienX = -2;
@@ -103,7 +109,6 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
             velAlienY = -2;
         }
         if(c == 68){//d
-            System.out.println(c);
             velAlienX = 2;
             velAlienY = 0;
         }
@@ -114,11 +119,11 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
     }
     public void keyReleased(KeyEvent e){}
     public void keyTyped(KeyEvent e){}
-    
+
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         g.setColor(Color.BLACK);
-        g.fillRect(0, 0, width, height);        
+        g.fillRect(0, 0, width, height);
         if(!starsReady){//generate stars
             g.setColor(Color.WHITE);
             for(int i = 0; i <= (width/3); i++){//randomly generate stars
@@ -131,13 +136,13 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         }else{
             g.setColor(Color.WHITE);
             for(int i = 0; i <= width/3; i++){
-                g.fillOval(starX.get(i), starY.get(i), 5, 5);                
+                g.fillOval(starX.get(i), starY.get(i), 5, 5);
             }
         }
         g.drawImage(humanImage, humanX, humanY, null);//draw human ship
         g.drawImage(alienImage, alienX, alienY, null);//draw alien ship
     }
-    
+
     public static void main(String[] args){
         BattleGround battlescreen = new BattleGround();
         JFrame frame = new JFrame("Mini Invaders 1.0");
@@ -147,14 +152,41 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(battlescreen);
     }
-    
+
     public int width(){
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         return (int)screenSize.getWidth() + 1;
     }
-    
+
     public int height(){
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        return (int)screenSize.getHeight() + 1;        
+        return (int)screenSize.getHeight() + 1;
+    }
+    public void fire(int whoShot){
+        switch(whoShot){
+            case 1:
+                if (velHumanX > 0) {
+                    bulletX.add(humanX + humanWidth + 2);
+                    bulletY.add(humanY - (humanHeight / 2));
+                    bulletVelX.add(velHumanX + 1);
+                    bulletVelY.add(0);
+                } else if (velHumanX < 0) {
+                    bulletX.add(humanX - 2);
+                    bulletY.add(humanY - (humanHeight / 2));
+                    bulletVelX.add(velHumanX - 1);
+                    bulletVelY.add(0);
+                } else if (velHumanY > 0) {
+                    bulletY.add(humanY + humanHeight + 2);
+                    bulletX.add(humanX - (humanWidth / 2));
+                    bulletVelY.add(velHumanY + 1);
+                    bulletVelX.add(0);
+                } else if (velHumanY < 0) {
+                    bulletY.add(humanY - 2);
+                    bulletX.add(humanX - (humanWidth / 2));
+                    bulletVelY.add(velHumanY - 1);
+                    bulletVelX.add(0);
+                }
+                break;
+        }
     }
 }
