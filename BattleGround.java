@@ -24,6 +24,8 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
     ArrayList<Integer> bulletY = new ArrayList<Integer>();
     ArrayList<Integer> bulletVelX = new ArrayList<Integer>();
     ArrayList<Integer> bulletVelY = new ArrayList<Integer>();
+    ArrayList<Integer> bulletDuration = new ArrayList<Integer>();
+    boolean bulletsActive = false;
     public BattleGround(){
         tm.start();
         addKeyListener(this);
@@ -141,6 +143,22 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         }
         g.drawImage(humanImage, humanX, humanY, null);//draw human ship
         g.drawImage(alienImage, alienX, alienY, null);//draw alien ship
+        if(bulletsActive){
+            for(int i = 0; i < bulletX.size(); i++){
+                g.drawOval(bulletX.get(i), bulletY.get(i), 15, 15);
+                bulletX.set(i, bulletX.get(i) + bulletVelX.get(i));
+                bulletY.set(i, bulletY.get(i) + bulletVelY.get(i));
+                if(bulletDuration.get(i) == 20){
+                    bulletX.remove(i);
+                    bulletY.remove(i);
+                    bulletVelX.remove(i);
+                    bulletVelY.remove(i);
+                    bulletDuration.remove(i);
+                }else{
+                    bulletDuration.set(i, bulletDuration.get(i) + 1);
+                }
+            }
+        }
     }
 
     public static void main(String[] args){
@@ -163,6 +181,8 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         return (int)screenSize.getHeight() + 1;
     }
     public void fire(int whoShot){
+        bulletsActive = true;
+        bulletDuration.add(0);
         switch(whoShot){
             case 1:
                 if (velHumanX > 0) {
