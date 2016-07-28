@@ -16,7 +16,7 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
     BufferedImage alienImage;
     int width = width();
     int height = height();
-    int alienX = 23, velAlienX = 0, alienY = 23, velAlienY = 0, alienHeight = 0, alienWidth = 0;
+    int alienX = 100, velAlienX = 0, alienY = 100, velAlienY = 0, alienHeight = 0, alienWidth = 0;
     boolean starsReady = false;
     ArrayList<Integer> starX = new ArrayList<Integer>();
     ArrayList<Integer> starY = new ArrayList<Integer>();
@@ -154,12 +154,6 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
                 g.drawOval(bulletX.get(i), bulletY.get(i), 15, 15);
                 g.setColor(Color.WHITE);
                 g.fillOval(bulletX.get(i), bulletY.get(i), 15, 15);
-                if((bulletX.get(i) > humanX && bulletX.get(i) < (humanX + humanWidth)) && (bulletY.get(i) > humanY && bulletY.get(i) < (humanY + humanHeight))){
-                    death(1);
-                }
-                if((bulletX.get(i) > humanX && bulletX.get(i) < (humanX + humanWidth)) && (bulletY.get(i) > humanY && bulletY.get(i) < (humanY + humanHeight))){
-                    death(2);
-                }
                 bulletX.set(i, bulletX.get(i) + bulletVelX.get(i));
                 bulletY.set(i, bulletY.get(i) + bulletVelY.get(i));
                 if(bulletDuration.get(i) >= 500){
@@ -171,8 +165,14 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
                 }else{
                     bulletDuration.set(i, bulletDuration.get(i) + 1);
                 }
+                if((bulletX.get(i) > humanX + 15 && bulletX.get(i) < (humanX + humanWidth - 15)) && (bulletY.get(i) > humanY + 15 && bulletY.get(i) < (humanY + humanHeight - 15))){
+                    death(1);
+                }
+                if((bulletX.get(i) > alienX + 15 && bulletX.get(i) < (alienX + alienWidth - 15)) && (bulletY.get(i) > alienY + 8 && bulletY.get(i) < (alienY + alienHeight - 15))){
+                    death(2);
+                }
             }
-            if(bulletX.size() == 0)
+            if(bulletDuration.size() == 0)
                 bulletsActive = false;
         }
     }
@@ -202,63 +202,63 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         bulletDuration.add(0);
         switch(whoShot){
             case 1:
-            if (velHumanX > 0) {
-                bulletX.add(humanX + humanWidth + 6);
-                bulletY.add(humanY + (humanHeight / 2));
-                bulletVelX.add(velHumanX + 1);
-                bulletVelY.add(0);
-            } else if (velHumanX < 0) {
-                bulletX.add(humanX - 6);
-                bulletY.add(humanY + (humanHeight / 2));
-                bulletVelX.add(velHumanX - 1);
-                bulletVelY.add(0);
-            } else if (velHumanY > 0) {
-                bulletY.add(humanY + humanHeight + 6);
-                bulletX.add(humanX + (humanWidth / 2));
-                bulletVelY.add(velHumanY + 1);
-                bulletVelX.add(0);
-            } else if (velHumanY < 0) {
-                bulletY.add(humanY - 6);
-                bulletX.add(humanX + (humanWidth / 2));
-                bulletVelY.add(velHumanY - 1);
-                bulletVelX.add(0);
-            }
-            break;
+                if (velHumanX > 0) {
+                    bulletX.add(humanX + humanWidth + 6);
+                    bulletY.add(humanY + (humanHeight / 2));
+                    bulletVelX.add(velHumanX + 1);
+                    bulletVelY.add(0);
+                } else if (velHumanX < 0) {
+                    bulletX.add(humanX - 6);
+                    bulletY.add(humanY + (humanHeight / 2));
+                    bulletVelX.add(velHumanX - 1);
+                    bulletVelY.add(0);
+                } else if (velHumanY > 0) {
+                    bulletY.add(humanY + humanHeight + 6);
+                    bulletX.add(humanX + (humanWidth / 2));
+                    bulletVelY.add(velHumanY + 1);
+                    bulletVelX.add(0);
+                } else if (velHumanY < 0) {
+                    bulletY.add(humanY - 6);
+                    bulletX.add(humanX + (humanWidth / 2));
+                    bulletVelY.add(velHumanY - 1);
+                    bulletVelX.add(0);
+                }
+                break;
             case 2:
-            if (velAlienX > 0) {
-                bulletX.add(alienX + alienWidth + 4);
-                bulletY.add(alienY + (alienHeight / 2));
-                bulletVelX.add(velAlienX + 1);
-                bulletVelY.add(0);
-            } else if (velAlienX < 0) {
-                bulletX.add(alienX - 4);
-                bulletY.add(alienY + (alienHeight / 2));
-                bulletVelX.add(velAlienX - 1);
-                bulletVelY.add(0);
-            } else if (velAlienY > 0) {
-                bulletY.add(alienY + alienHeight + 4);
-                bulletX.add(alienX + (alienWidth / 2));
-                bulletVelY.add(velAlienY + 1);
-                bulletVelX.add(0);
-            } else if (velAlienY < 0) {
-                bulletY.add(alienY - 4);
-                bulletX.add(alienX + (alienWidth / 2));
-                bulletVelY.add(velAlienY - 1);
-                bulletVelX.add(0);
-            }            
-            break;
+                if (velAlienX > 0) {
+                    bulletX.add(alienX + alienWidth + 4);
+                    bulletY.add(alienY + (alienHeight / 2));
+                    bulletVelX.add(velAlienX + 1);
+                    bulletVelY.add(0);
+                } else if (velAlienX < 0) {
+                    bulletX.add(alienX - 4);
+                    bulletY.add(alienY + (alienHeight / 2));
+                    bulletVelX.add(velAlienX - 1);
+                    bulletVelY.add(0);
+                } else if (velAlienY > 0) {
+                    bulletY.add(alienY + alienHeight + 4);
+                    bulletX.add(alienX + (alienWidth / 2));
+                    bulletVelY.add(velAlienY + 1);
+                    bulletVelX.add(0);
+                } else if (velAlienY < 0) {
+                    bulletY.add(alienY - 4);
+                    bulletX.add(alienX + (alienWidth / 2));
+                    bulletVelY.add(velAlienY - 1);
+                    bulletVelX.add(0);
+                }
+                break;
         }
     }
-    
+
     public void death(int whoDied){
         tm.stop();
         switch(whoDied){
-            case 1: 
+            case 1:
                 System.out.println("HumanShip died!");
-            break;
+                break;
             case 2:
                 System.out.println("AlienShip died!");
-            break;
+                break;
         }
     }
 }
