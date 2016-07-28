@@ -1,13 +1,13 @@
 //Human = player 1 Alien = player 2
 import java.awt.*;
-        import java.awt.event.*;
-        import java.awt.image.*;
-        import java.io.*;
-        import java.net.*;
-        import javax.swing.*;
-        import javax.imageio.*;
-        import java.util.Random;
-        import java.util.ArrayList;
+import java.awt.event.*;
+import java.awt.image.*;
+import java.io.*;
+import java.net.*;
+import javax.swing.*;
+import javax.imageio.*;
+import java.util.Random;
+import java.util.ArrayList;
 
 public class BattleGround extends JPanel implements ActionListener, KeyListener{
     Timer tm = new Timer(5, this);
@@ -83,43 +83,48 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
 
         //human controls
         if(c == KeyEvent.VK_LEFT){//if left arrow key pressed
-            velHumanX = -2;
+            velHumanX = -4;
             velHumanY = 0;
         }
         if(c == KeyEvent.VK_UP){
             velHumanX = 0;
-            velHumanY = -2;
+            velHumanY = -4;
         }
         if(c == KeyEvent.VK_RIGHT){
-            velHumanX = 2;
+            velHumanX = 4;
             velHumanY = 0;
         }
         if(c == KeyEvent.VK_DOWN){
             velHumanX = 0;
-            velHumanY = 2;
+            velHumanY = 4;
         }
-        if(c == 16){//shift to fire
+        if(c == 47){//? to fire
             fire(1);
         }
         //alien controls
         if(c == 65){//a
-            velAlienX = -2;
+            velAlienX = -4;
             velAlienY = 0;
         }
         if(c == 87){//w
             velAlienX = 0;
-            velAlienY = -2;
+            velAlienY = -4;
         }
         if(c == 68){//d
-            velAlienX = 2;
+            velAlienX = 4;
             velAlienY = 0;
         }
         if(c == 83){//s
             velAlienX = 0;
-            velAlienY = 2;
+            velAlienY = 4;
+        }
+        if(c == 81){//q to fire
+            fire(2);
         }
     }
+
     public void keyReleased(KeyEvent e){}
+
     public void keyTyped(KeyEvent e){}
 
     public void paintComponent(Graphics g){
@@ -145,10 +150,19 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         g.drawImage(alienImage, alienX, alienY, null);//draw alien ship
         if(bulletsActive){
             for(int i = 0; i < bulletX.size(); i++){
+                g.setColor(Color.WHITE);
                 g.drawOval(bulletX.get(i), bulletY.get(i), 15, 15);
+                g.setColor(Color.WHITE);
+                g.fillOval(bulletX.get(i), bulletY.get(i), 15, 15);
+                if((bulletX.get(i) > humanX && bulletX.get(i) < (humanX + humanWidth)) && (bulletY.get(i) > humanY && bulletY.get(i) < (humanY + humanHeight))){
+                    death(1);
+                }
+                if((bulletX.get(i) > humanX && bulletX.get(i) < (humanX + humanWidth)) && (bulletY.get(i) > humanY && bulletY.get(i) < (humanY + humanHeight))){
+                    death(2);
+                }
                 bulletX.set(i, bulletX.get(i) + bulletVelX.get(i));
                 bulletY.set(i, bulletY.get(i) + bulletVelY.get(i));
-                if(bulletDuration.get(i) == 20){
+                if(bulletDuration.get(i) >= 500){
                     bulletX.remove(i);
                     bulletY.remove(i);
                     bulletVelX.remove(i);
@@ -158,6 +172,8 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
                     bulletDuration.set(i, bulletDuration.get(i) + 1);
                 }
             }
+            if(bulletX.size() == 0)
+                bulletsActive = false;
         }
     }
 
@@ -180,33 +196,69 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         return (int)screenSize.getHeight() + 1;
     }
+
     public void fire(int whoShot){
         bulletsActive = true;
         bulletDuration.add(0);
         switch(whoShot){
             case 1:
-                if (velHumanX > 0) {
-                    bulletX.add(humanX + humanWidth + 2);
-                    bulletY.add(humanY - (humanHeight / 2));
-                    bulletVelX.add(velHumanX + 1);
-                    bulletVelY.add(0);
-                } else if (velHumanX < 0) {
-                    bulletX.add(humanX - 2);
-                    bulletY.add(humanY - (humanHeight / 2));
-                    bulletVelX.add(velHumanX - 1);
-                    bulletVelY.add(0);
-                } else if (velHumanY > 0) {
-                    bulletY.add(humanY + humanHeight + 2);
-                    bulletX.add(humanX - (humanWidth / 2));
-                    bulletVelY.add(velHumanY + 1);
-                    bulletVelX.add(0);
-                } else if (velHumanY < 0) {
-                    bulletY.add(humanY - 2);
-                    bulletX.add(humanX - (humanWidth / 2));
-                    bulletVelY.add(velHumanY - 1);
-                    bulletVelX.add(0);
-                }
-                break;
+            if (velHumanX > 0) {
+                bulletX.add(humanX + humanWidth + 6);
+                bulletY.add(humanY + (humanHeight / 2));
+                bulletVelX.add(velHumanX + 1);
+                bulletVelY.add(0);
+            } else if (velHumanX < 0) {
+                bulletX.add(humanX - 6);
+                bulletY.add(humanY + (humanHeight / 2));
+                bulletVelX.add(velHumanX - 1);
+                bulletVelY.add(0);
+            } else if (velHumanY > 0) {
+                bulletY.add(humanY + humanHeight + 6);
+                bulletX.add(humanX + (humanWidth / 2));
+                bulletVelY.add(velHumanY + 1);
+                bulletVelX.add(0);
+            } else if (velHumanY < 0) {
+                bulletY.add(humanY - 6);
+                bulletX.add(humanX + (humanWidth / 2));
+                bulletVelY.add(velHumanY - 1);
+                bulletVelX.add(0);
+            }
+            break;
+            case 2:
+            if (velAlienX > 0) {
+                bulletX.add(alienX + alienWidth + 4);
+                bulletY.add(alienY + (alienHeight / 2));
+                bulletVelX.add(velAlienX + 1);
+                bulletVelY.add(0);
+            } else if (velAlienX < 0) {
+                bulletX.add(alienX - 4);
+                bulletY.add(alienY + (alienHeight / 2));
+                bulletVelX.add(velAlienX - 1);
+                bulletVelY.add(0);
+            } else if (velAlienY > 0) {
+                bulletY.add(alienY + alienHeight + 4);
+                bulletX.add(alienX + (alienWidth / 2));
+                bulletVelY.add(velAlienY + 1);
+                bulletVelX.add(0);
+            } else if (velAlienY < 0) {
+                bulletY.add(alienY - 4);
+                bulletX.add(alienX + (alienWidth / 2));
+                bulletVelY.add(velAlienY - 1);
+                bulletVelX.add(0);
+            }            
+            break;
+        }
+    }
+    
+    public void death(int whoDied){
+        tm.stop();
+        switch(whoDied){
+            case 1: 
+                System.out.println("HumanShip died!");
+            break;
+            case 2:
+                System.out.println("AlienShip died!");
+            break;
         }
     }
 }
