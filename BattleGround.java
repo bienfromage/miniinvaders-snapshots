@@ -11,12 +11,12 @@ import java.util.ArrayList;
 
 public class BattleGround extends JPanel implements ActionListener, KeyListener{
     Timer tm = new Timer(5, this);
-    int humanX = 1, velHumanX = 0, humanY = 1, velHumanY = 0, humanHeight = 0, humanWidth = 0;
+    int humanX = 100, velHumanX = 0, humanY = 100, velHumanY = 0, humanHeight = 0, humanWidth = 0, humanDeathSequence = 0;
     BufferedImage humanImage;
     BufferedImage alienImage;
     int width = width();
     int height = height();
-    int alienX = 100, velAlienX = 0, alienY = 100, velAlienY = 0, alienHeight = 0, alienWidth = 0;
+    int alienX = 500, velAlienX = 0, alienY = 500, velAlienY = 0, alienHeight = 0, alienWidth = 0, alienDeathSequence = 0;
     boolean starsReady = false;
     ArrayList<Integer> starX = new ArrayList<Integer>();
     ArrayList<Integer> starY = new ArrayList<Integer>();
@@ -25,7 +25,7 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
     ArrayList<Integer> bulletVelX = new ArrayList<Integer>();
     ArrayList<Integer> bulletVelY = new ArrayList<Integer>();
     ArrayList<Integer> bulletDuration = new ArrayList<Integer>();
-    boolean bulletsActive = false;
+    boolean bulletsActive = false, humanDied = false, alienDied = false;
     public BattleGround(){
         tm.start();
         addKeyListener(this);
@@ -75,51 +75,55 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         }else if(alienY > height - alienHeight){
             alienY = -alienHeight;
         }
+        theEnd();
         repaint();
     }
 
     public void keyPressed(KeyEvent e){
         int c = e.getKeyCode();
-
         //human controls
-        if(c == KeyEvent.VK_LEFT){//if left arrow key pressed
-            velHumanX = -4;
-            velHumanY = 0;
-        }
-        if(c == KeyEvent.VK_UP){
-            velHumanX = 0;
-            velHumanY = -4;
-        }
-        if(c == KeyEvent.VK_RIGHT){
-            velHumanX = 4;
-            velHumanY = 0;
-        }
-        if(c == KeyEvent.VK_DOWN){
-            velHumanX = 0;
-            velHumanY = 4;
-        }
-        if(c == 47){//? to fire
-            fire(1);
+        if(humanDied) {
+            if (c == KeyEvent.VK_LEFT) {//if left arrow key pressed
+                velHumanX = -4;
+                velHumanY = 0;
+            }
+            if (c == KeyEvent.VK_UP) {
+                velHumanX = 0;
+                velHumanY = -4;
+            }
+            if (c == KeyEvent.VK_RIGHT) {
+                velHumanX = 4;
+                velHumanY = 0;
+            }
+            if (c == KeyEvent.VK_DOWN) {
+                velHumanX = 0;
+                velHumanY = 4;
+            }
+            if (c == 47) {//? to fire
+                fire(1);
+            }
         }
         //alien controls
-        if(c == 65){//a
-            velAlienX = -4;
-            velAlienY = 0;
-        }
-        if(c == 87){//w
-            velAlienX = 0;
-            velAlienY = -4;
-        }
-        if(c == 68){//d
-            velAlienX = 4;
-            velAlienY = 0;
-        }
-        if(c == 83){//s
-            velAlienX = 0;
-            velAlienY = 4;
-        }
-        if(c == 81){//q to fire
-            fire(2);
+        if(alienDied) {
+            if (c == 65) {//a
+                velAlienX = -4;
+                velAlienY = 0;
+            }
+            if (c == 87) {//w
+                velAlienX = 0;
+                velAlienY = -4;
+            }
+            if (c == 68) {//d
+                velAlienX = 4;
+                velAlienY = 0;
+            }
+            if (c == 83) {//s
+                velAlienX = 0;
+                velAlienY = 4;
+            }
+            if (c == 81) {//q to fire
+                fire(2);
+            }
         }
     }
 
@@ -146,8 +150,34 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
                 g.fillOval(starX.get(i), starY.get(i), 5, 5);
             }
         }
-        g.drawImage(humanImage, humanX, humanY, null);//draw human ship
-        g.drawImage(alienImage, alienX, alienY, null);//draw alien ship
+            if(humanDied && humanDeathSequence <= 400) {
+                g.setColor(Color.RED);
+                g.fillOval((humanX + (humanWidth + humanX)) / 2 - humanDeathSequence, (humanY + (humanHeight + humanY)) / 2 - humanDeathSequence, 10, 10);
+                g.fillOval((humanX + (humanWidth + humanX)) / 2, (humanY + (humanHeight + humanY)) / 2 - humanDeathSequence, 10, 10);
+                g.fillOval((humanX + (humanWidth + humanX)) / 2 + humanDeathSequence, (humanY + (humanHeight + humanY)) / 2 - humanDeathSequence, 10, 10);
+                g.fillOval((humanX + (humanWidth + humanX)) / 2 + humanDeathSequence, (humanY + (humanHeight + humanY)) / 2, 10, 10);
+                g.fillOval((humanX + (humanWidth + humanX)) / 2 + humanDeathSequence, (humanY + (humanHeight + humanY)) / 2 + humanDeathSequence, 10, 10);
+                g.fillOval((humanX + (humanWidth + humanX)) / 2, (humanY + (humanHeight + humanY)) / 2 + humanDeathSequence, 10, 10);
+                g.fillOval((humanX + (humanWidth + humanX)) / 2 - humanDeathSequence, (humanY + (humanHeight + humanY)) / 2 + humanDeathSequence, 10, 10);
+                g.fillOval((humanX + (humanWidth + humanX)) / 2 - humanDeathSequence, (humanY + (humanHeight + humanY)) / 2, 10, 10);
+                humanDeathSequence+=8;
+            }
+            if(alienDied && alienDeathSequence <= 400) {
+                g.setColor(Color.RED);
+                g.fillOval((alienX + (alienWidth + alienX)) / 2 - alienDeathSequence, (alienY + (alienHeight + alienY)) / 2 - alienDeathSequence, 10, 10);
+                g.fillOval((alienX + (alienWidth + alienX)) / 2, (alienY + (alienHeight + alienY)) / 2 - alienDeathSequence, 10, 10);
+                g.fillOval((alienX + (alienWidth + alienX)) / 2 + alienDeathSequence, (alienY + (alienHeight + alienY)) / 2 - alienDeathSequence, 10, 10);
+                g.fillOval((alienX + (alienWidth + alienX)) / 2 + alienDeathSequence, (alienY + (alienHeight + alienY)) / 2, 10, 10);
+                g.fillOval((alienX + (alienWidth + alienX)) / 2 + alienDeathSequence, (alienY + (alienHeight + alienY)) / 2 + alienDeathSequence, 10, 10);
+                g.fillOval((alienX + (alienWidth + alienX)) / 2, (alienY + (alienHeight + alienY)) / 2 + alienDeathSequence, 10, 10);
+                g.fillOval((alienX + (alienWidth + alienX)) / 2 - alienDeathSequence, (alienY + (alienHeight + alienY)) / 2 + alienDeathSequence, 10, 10);
+                g.fillOval((alienX + (alienWidth + alienX)) / 2 - alienDeathSequence, (alienY + (alienHeight + alienY)) / 2, 10, 10);
+                alienDeathSequence+=8;
+            }
+        if(!humanDied)
+            g.drawImage(humanImage, humanX, humanY, null);//draw human ship
+        if(!alienDied)
+            g.drawImage(alienImage, alienX, alienY, null);//draw alien ship
         if(bulletsActive){
             for(int i = 0; i < bulletX.size(); i++){
                 g.setColor(Color.WHITE);
@@ -165,11 +195,13 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
                 }else{
                     bulletDuration.set(i, bulletDuration.get(i) + 1);
                 }
-                if((bulletX.get(i) > humanX + 15 && bulletX.get(i) < (humanX + humanWidth - 15)) && (bulletY.get(i) > humanY + 15 && bulletY.get(i) < (humanY + humanHeight - 15))){
-                    death(1);
+                if((bulletX.get(i) > humanX + 15 && bulletX.get(i) < (humanX + humanWidth - 15)) && (bulletY.get(i) > humanY + 15 && bulletY.get(i) < (humanY + humanHeight - 15)) && !humanDied){
+                    humanDied = true;
+                    bulletDuration.set(i, 500);
                 }
-                if((bulletX.get(i) > alienX + 15 && bulletX.get(i) < (alienX + alienWidth - 15)) && (bulletY.get(i) > alienY + 8 && bulletY.get(i) < (alienY + alienHeight - 15))){
-                    death(2);
+                if((bulletX.get(i) > alienX + 15 && bulletX.get(i) < (alienX + alienWidth - 15)) && (bulletY.get(i) > alienY + 8 && bulletY.get(i) < (alienY + alienHeight - 15)) && !alienDied){
+                    alienDied = true;
+                    bulletDuration.set(i, 500);
                 }
             }
             if(bulletDuration.size() == 0)
@@ -180,7 +212,7 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
     public static void main(String[] args){
         BattleGround battlescreen = new BattleGround();
         JFrame frame = new JFrame("Mini Invaders 1.0");
-        frame.setSize(1, 1);
+        frame.setSize(600, 600);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -250,15 +282,8 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         }
     }
 
-    public void death(int whoDied){
-        tm.stop();
-        switch(whoDied){
-            case 1:
-                System.out.println("HumanShip died!");
-                break;
-            case 2:
-                System.out.println("AlienShip died!");
-                break;
-        }
+    public void theEnd(){
+        if((alienDeathSequence > 400 && !humanDied) || (humanDeathSequence > 400 && !alienDied) || (alienDeathSequence > 400 && humanDeathSequence > 400))
+            System.exit(0);
     }
 }
