@@ -27,7 +27,6 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
     ArrayList<Integer> bulletDuration = new ArrayList<Integer>();
     boolean bulletsActive = false, humanDied = false, alienDied = false;
     public BattleGround(){
-        tm.start();
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
@@ -50,6 +49,7 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         humanWidth = humanImage.getWidth();
         alienHeight = alienImage.getHeight();
         alienWidth = alienImage.getWidth();
+        tm.start();
     }
 
     public void actionPerformed(ActionEvent e){
@@ -81,8 +81,7 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
 
     public void keyPressed(KeyEvent e){
         int c = e.getKeyCode();
-        //human controls
-        if(humanDied) {
+        if(!humanDied) {
             if (c == KeyEvent.VK_LEFT) {//if left arrow key pressed
                 velHumanX = -4;
                 velHumanY = 0;
@@ -104,7 +103,7 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
             }
         }
         //alien controls
-        if(alienDied) {
+        if(!alienDied) {
             if (c == 65) {//a
                 velAlienX = -4;
                 velAlienY = 0;
