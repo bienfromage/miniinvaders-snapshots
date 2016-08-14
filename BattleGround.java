@@ -17,7 +17,7 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
     int width = width();
     int height = height();
     int alienX = 500, velAlienX = 0, alienY = 500, velAlienY = 0, alienHeight = 0, alienWidth = 0, alienDeathSequence = 0;
-    boolean starsReady = false;
+    boolean fieldReady = false;
     ArrayList<Integer> starX = new ArrayList<Integer>();
     ArrayList<Integer> starY = new ArrayList<Integer>();
     ArrayList<Integer> bulletX = new ArrayList<Integer>();
@@ -25,7 +25,11 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
     ArrayList<Integer> bulletVelX = new ArrayList<Integer>();
     ArrayList<Integer> bulletVelY = new ArrayList<Integer>();
     ArrayList<Integer> bulletDuration = new ArrayList<Integer>();
+    ArrayList<Integer> numOfAsteroidPoints = new ArrayList<Integer>();
+    ArrayList<Integer> asteroidX = new ArrayList<Integer>();
+    ArrayList<Integer> asteroidY = new ArrayList<Integer>();
     boolean bulletsActive = false, humanDied = false, alienDied = false;
+    int asteroids = 0;
     public BattleGround(){
         addKeyListener(this);
         setFocusable(true);
@@ -59,7 +63,7 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         alienY += velAlienY;
         if(humanX < -humanWidth){//wrap screen for human player
             humanX = width - humanWidth;
-        }else if(humanX > width - humanWidth){
+        }else if(humanX > width - humanWidth){//test
             humanX = -humanWidth;
         }else if(humanY < -humanHeight){
             humanY = height - humanHeight;
@@ -134,19 +138,62 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         super.paintComponent(g);
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, width, height);
-        if(!starsReady){//generate stars
+        if(!fieldReady){//generate stars and asteroids
             g.setColor(Color.WHITE);
+            Random fromage = new Random();
             for(int i = 0; i <= (width/3); i++){//randomly generate stars
-                Random fromage = new Random();
                 starX.add(fromage.nextInt(width));
                 starY.add(fromage.nextInt(height));
                 g.fillOval(starX.get(i), starY.get(i), 5, 5);
             }
-            starsReady = true;
+            asteroids = fromage.nextInt(5) + 2;//randomly generate asteroids
+            for(int i = 0; i <  asteroids; i++){
+                int pointNum = fromage.nextInt(8) + 3;
+                numOfAsteroidPoints.add(pointNum);
+                boolean foundPotentialX = false;
+                int potentialX = 0;
+                while(!foundPotentialX){
+                    potentialX = fromage.nextInt(width + 1);
+                    if((potentialX < 70 || potentialX > 130 + humanWidth) && (potentialX < 470 || potentialX > 530 + humanWidth))
+                        foundPotentialX = true;
+                }
+                boolean foundPotentialY = false;
+                int potentialY = 0;
+                while(!foundPotentialY){
+                    potentialY = fromage.nextInt(height + 1);
+                    if((potentialY < 10 || potentialY > 190 + humanWidth) && (potentialY < 410 || potentialY > 590 + humanWidth))
+                        foundPotentialY = true;
+                }
+                asteroidX.add(potentialX);
+                asteroidY.add(potentialY);
+                for(int j = 1; j < pointNum - 1; j++){
+                    asteroidX.add(fromage.nextInt(91) + potentialX - 10);
+                    asteroidY.add(fromage.nextInt(91) + potentialY - 10);
+                }
+                asteroidX.add(potentialX);
+                asteroidY.add(potentialY);
+            }
+            g.setColor(Color.GRAY);
+            for(int i = 0; i < numOfAsteroidPoints.size(); i++){
+                Polygon polystroid = new Polygon();
+                for(int j = 0; j <= numOfAsteroidPoints.get(i); j++){
+                    polystroid.addPoint(asteroidX.get(j), asteroidY.get(j));
+                }
+                g.fillPolygon(polystroid);
+            }
+            fieldReady = true;
         }else{
             g.setColor(Color.WHITE);
-            for(int i = 0; i <= width/3; i++){
+            for(int i = 0; i < starX.size(); i++){
                 g.fillOval(starX.get(i), starY.get(i), 5, 5);
+            }
+            g.setColor(Color.GRAY);
+            for(int i = 0; i < numOfAsteroidPoints.size(); i++){
+                Polygon polystroid = new Polygon();
+                for(int j = 1; j <= numOfAsteroidPoints.get(i); j++){
+                    polystroid.addPoint(asteroidX.get(j), asteroidY.get(j));
+                }
+                g.fillPolygon(polystroid);
             }
         }
             if(humanDied && humanDeathSequence <= 400) {
@@ -206,12 +253,12 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
             if(bulletDuration.size() == 0)
                 bulletsActive = false;
         }
+
     }
 
     public static void main(String[] args){
         BattleGround battlescreen = new BattleGround();
         JFrame frame = new JFrame("Mini Invaders 1.0");
-        frame.setSize(600, 600);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -280,7 +327,6 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
                 break;
         }
     }
-
     public void theEnd(){
         if((alienDeathSequence > 400 && !humanDied) || (humanDeathSequence > 400 && !alienDied) || (alienDeathSequence > 400 && humanDeathSequence > 400))
             System.exit(0);
