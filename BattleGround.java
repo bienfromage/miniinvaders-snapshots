@@ -147,40 +147,7 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
                 g.fillOval(starX.get(i), starY.get(i), 5, 5);
             }
             asteroids = fromage.nextInt(5) + 2;//randomly generate asteroids
-            for(int i = 0; i <  asteroids; i++){
-                int pointNum = fromage.nextInt(8) + 3;
-                numOfAsteroidPoints.add(pointNum);
-                boolean foundPotentialX = false;
-                int potentialX = 0;
-                while(!foundPotentialX){
-                    potentialX = fromage.nextInt(width + 1);
-                    if((potentialX < 70 || potentialX > 130 + humanWidth) && (potentialX < 470 || potentialX > 530 + humanWidth))
-                        foundPotentialX = true;
-                }
-                boolean foundPotentialY = false;
-                int potentialY = 0;
-                while(!foundPotentialY){
-                    potentialY = fromage.nextInt(height + 1);
-                    if((potentialY < 10 || potentialY > 190 + humanWidth) && (potentialY < 410 || potentialY > 590 + humanWidth))
-                        foundPotentialY = true;
-                }
-                asteroidX.add(potentialX);
-                asteroidY.add(potentialY);
-                for(int j = 1; j < pointNum - 1; j++){
-                    asteroidX.add(fromage.nextInt(91) + potentialX - 10);
-                    asteroidY.add(fromage.nextInt(91) + potentialY - 10);
-                }
-                asteroidX.add(potentialX);
-                asteroidY.add(potentialY);
-            }
-            g.setColor(Color.GRAY);
-            for(int i = 0; i < numOfAsteroidPoints.size(); i++){
-                Polygon polystroid = new Polygon();
-                for(int j = 0; j <= numOfAsteroidPoints.get(i); j++){
-                    polystroid.addPoint(asteroidX.get(j), asteroidY.get(j));
-                }
-                g.fillPolygon(polystroid);
-            }
+
             fieldReady = true;
         }else{
             g.setColor(Color.WHITE);
