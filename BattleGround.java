@@ -18,16 +18,15 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
     int height = height();
     int alienX = 500, velAlienX = 0, alienY = 500, velAlienY = 0, alienHeight = 0, alienWidth = 0, alienDeathSequence = 0;
     boolean fieldReady = false;
-    ArrayList<Integer> starX = new ArrayList<Integer>();
-    ArrayList<Integer> starY = new ArrayList<Integer>();
-    ArrayList<Integer> bulletX = new ArrayList<Integer>();
-    ArrayList<Integer> bulletY = new ArrayList<Integer>();
-    ArrayList<Integer> bulletVelX = new ArrayList<Integer>();
-    ArrayList<Integer> bulletVelY = new ArrayList<Integer>();
-    ArrayList<Integer> bulletDuration = new ArrayList<Integer>();
-    ArrayList<Integer> numOfAsteroidPoints = new ArrayList<Integer>();
-    ArrayList<Integer> asteroidX = new ArrayList<Integer>();
-    ArrayList<Integer> asteroidY = new ArrayList<Integer>();
+    ArrayList<Integer> starX = new ArrayList<>();
+    ArrayList<Integer> starY = new ArrayList<>();
+    ArrayList<Integer> bulletX = new ArrayList<>();
+    ArrayList<Integer> bulletY = new ArrayList<>();
+    ArrayList<Integer> bulletVelX = new ArrayList<>();
+    ArrayList<Integer> bulletVelY = new ArrayList<>();
+    ArrayList<Integer> bulletDuration = new ArrayList<>();
+    ArrayList<Integer> asteroidX = new ArrayList<>();
+    ArrayList<Integer> asteroidY = new ArrayList<>();
     boolean bulletsActive = false, humanDied = false, alienDied = false;
     int asteroids = 0;
     public BattleGround(){
@@ -148,20 +147,57 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
             }
             asteroids = fromage.nextInt(5) + 2;//randomly generate asteroids
 
+            int rockX, rockY;
+            rockX = fromage.nextInt(width) - 180;
+            rockY = fromage.nextInt(height) - 180;
+
+            while((rockX > humanX - 181 && rockX < humanX + humanWidth && rockY < humanY + humanHeight && rockY > humanY - 181) || (rockX > alienX - 181 && rockX < alienX + alienWidth && rockY < alienY + alienHeight && rockY > alienY - 181)){
+                rockX = fromage.nextInt(width)- 180;
+                rockY = fromage.nextInt(height) - 180;
+            }
+
+            asteroidX.add(rockX);//pt 1
+            asteroidX.add(rockX - fromage.nextInt(41)+20);//2
+            asteroidX.add(rockX - fromage.nextInt(31)+40);//3
+            asteroidX.add(rockX + fromage.nextInt(4)-2);//4
+            asteroidX.add(rockX + fromage.nextInt(31)+40);//5
+            asteroidX.add(rockX + fromage.nextInt(31)+150);//6
+            asteroidX.add(rockX + fromage.nextInt(31)+130);//7
+            asteroidX.add(rockX + fromage.nextInt(31)+80);//8
+            asteroidX.add(rockX + fromage.nextInt(31)+40);//9
+            asteroidX.add(rockX);//10
+            asteroidY.add(rockY);//pt 1
+            asteroidY.add(rockY + fromage.nextInt(31)+40);//2
+            asteroidY.add(rockY + fromage.nextInt(31)+80);//3
+            asteroidY.add(rockY + fromage.nextInt(31)+150);//4
+            asteroidY.add(rockY + fromage.nextInt(31)+150);//5
+            asteroidY.add(rockY + fromage.nextInt(31)+80);//6
+            asteroidY.add(rockY + fromage.nextInt(31)+60);//7
+            asteroidY.add(rockY + fromage.nextInt(31)+60);//8
+            asteroidY.add(rockY + fromage.nextInt(31)+40);//9
+            asteroidY.add(rockY);//10
+
+            Polygon asteroid = new Polygon();
+            for(int i = 0; i < asteroidX.size(); i++) {
+                asteroid.addPoint(asteroidX.get(i), asteroidY.get(i));
+            }
+            g.setColor(Color.GRAY);
+            g.fillPolygon(asteroid);
+
             fieldReady = true;
         }else{
             g.setColor(Color.WHITE);
             for(int i = 0; i < starX.size(); i++){
                 g.fillOval(starX.get(i), starY.get(i), 5, 5);
             }
-            g.setColor(Color.GRAY);
-            for(int i = 0; i < numOfAsteroidPoints.size(); i++){
-                Polygon polystroid = new Polygon();
-                for(int j = 1; j <= numOfAsteroidPoints.get(i); j++){
-                    polystroid.addPoint(asteroidX.get(j), asteroidY.get(j));
-                }
-                g.fillPolygon(polystroid);
+
+            Polygon asteroid = new Polygon();
+            for(int i = 0; i < asteroidX.size(); i++) {
+                asteroid.addPoint(asteroidX.get(i), asteroidY.get(i));
             }
+            g.setColor(Color.GRAY);
+            g.fillPolygon(asteroid);
+
         }
             if(humanDied && humanDeathSequence <= 400) {
                 g.setColor(Color.RED);
@@ -214,6 +250,9 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
                 }
                 if((bulletX.get(i) > alienX + 15 && bulletX.get(i) < (alienX + alienWidth - 15)) && (bulletY.get(i) > alienY + 8 && bulletY.get(i) < (alienY + alienHeight - 15)) && !alienDied){
                     alienDied = true;
+                    bulletDuration.set(i, 500);
+                }
+                if(bulletX.get(i) > asteroidX.get(0) && bulletX.get(i) < asteroidX.get(0) + 181 && bulletY.get(i) > asteroidY.get(0) && bulletY.get(i) < asteroidY.get(0) + 181){//bullet explodes on asteroid
                     bulletDuration.set(i, 500);
                 }
             }
