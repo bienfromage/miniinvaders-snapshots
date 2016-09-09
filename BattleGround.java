@@ -199,30 +199,30 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
             g.fillPolygon(asteroid);
 
         }
-            if(humanDied && humanDeathSequence <= 400) {
-                g.setColor(Color.RED);
-                g.fillOval((humanX + (humanWidth + humanX)) / 2 - humanDeathSequence, (humanY + (humanHeight + humanY)) / 2 - humanDeathSequence, 10, 10);
-                g.fillOval((humanX + (humanWidth + humanX)) / 2, (humanY + (humanHeight + humanY)) / 2 - humanDeathSequence, 10, 10);
-                g.fillOval((humanX + (humanWidth + humanX)) / 2 + humanDeathSequence, (humanY + (humanHeight + humanY)) / 2 - humanDeathSequence, 10, 10);
-                g.fillOval((humanX + (humanWidth + humanX)) / 2 + humanDeathSequence, (humanY + (humanHeight + humanY)) / 2, 10, 10);
-                g.fillOval((humanX + (humanWidth + humanX)) / 2 + humanDeathSequence, (humanY + (humanHeight + humanY)) / 2 + humanDeathSequence, 10, 10);
-                g.fillOval((humanX + (humanWidth + humanX)) / 2, (humanY + (humanHeight + humanY)) / 2 + humanDeathSequence, 10, 10);
-                g.fillOval((humanX + (humanWidth + humanX)) / 2 - humanDeathSequence, (humanY + (humanHeight + humanY)) / 2 + humanDeathSequence, 10, 10);
-                g.fillOval((humanX + (humanWidth + humanX)) / 2 - humanDeathSequence, (humanY + (humanHeight + humanY)) / 2, 10, 10);
-                humanDeathSequence+=8;
-            }
-            if(alienDied && alienDeathSequence <= 400) {
-                g.setColor(Color.RED);
-                g.fillOval((alienX + (alienWidth + alienX)) / 2 - alienDeathSequence, (alienY + (alienHeight + alienY)) / 2 - alienDeathSequence, 10, 10);
-                g.fillOval((alienX + (alienWidth + alienX)) / 2, (alienY + (alienHeight + alienY)) / 2 - alienDeathSequence, 10, 10);
-                g.fillOval((alienX + (alienWidth + alienX)) / 2 + alienDeathSequence, (alienY + (alienHeight + alienY)) / 2 - alienDeathSequence, 10, 10);
-                g.fillOval((alienX + (alienWidth + alienX)) / 2 + alienDeathSequence, (alienY + (alienHeight + alienY)) / 2, 10, 10);
-                g.fillOval((alienX + (alienWidth + alienX)) / 2 + alienDeathSequence, (alienY + (alienHeight + alienY)) / 2 + alienDeathSequence, 10, 10);
-                g.fillOval((alienX + (alienWidth + alienX)) / 2, (alienY + (alienHeight + alienY)) / 2 + alienDeathSequence, 10, 10);
-                g.fillOval((alienX + (alienWidth + alienX)) / 2 - alienDeathSequence, (alienY + (alienHeight + alienY)) / 2 + alienDeathSequence, 10, 10);
-                g.fillOval((alienX + (alienWidth + alienX)) / 2 - alienDeathSequence, (alienY + (alienHeight + alienY)) / 2, 10, 10);
-                alienDeathSequence+=8;
-            }
+        if(humanDied && humanDeathSequence <= 400) {
+            g.setColor(Color.RED);
+            g.fillOval((humanX + (humanWidth + humanX)) / 2 - humanDeathSequence, (humanY + (humanHeight + humanY)) / 2 - humanDeathSequence, 10, 10);
+            g.fillOval((humanX + (humanWidth + humanX)) / 2, (humanY + (humanHeight + humanY)) / 2 - humanDeathSequence, 10, 10);
+            g.fillOval((humanX + (humanWidth + humanX)) / 2 + humanDeathSequence, (humanY + (humanHeight + humanY)) / 2 - humanDeathSequence, 10, 10);
+            g.fillOval((humanX + (humanWidth + humanX)) / 2 + humanDeathSequence, (humanY + (humanHeight + humanY)) / 2, 10, 10);
+            g.fillOval((humanX + (humanWidth + humanX)) / 2 + humanDeathSequence, (humanY + (humanHeight + humanY)) / 2 + humanDeathSequence, 10, 10);
+            g.fillOval((humanX + (humanWidth + humanX)) / 2, (humanY + (humanHeight + humanY)) / 2 + humanDeathSequence, 10, 10);
+            g.fillOval((humanX + (humanWidth + humanX)) / 2 - humanDeathSequence, (humanY + (humanHeight + humanY)) / 2 + humanDeathSequence, 10, 10);
+            g.fillOval((humanX + (humanWidth + humanX)) / 2 - humanDeathSequence, (humanY + (humanHeight + humanY)) / 2, 10, 10);
+            humanDeathSequence+=8;
+        }
+        if(alienDied && alienDeathSequence <= 400) {
+            g.setColor(Color.RED);
+            g.fillOval((alienX + (alienWidth + alienX)) / 2 - alienDeathSequence, (alienY + (alienHeight + alienY)) / 2 - alienDeathSequence, 10, 10);
+            g.fillOval((alienX + (alienWidth + alienX)) / 2, (alienY + (alienHeight + alienY)) / 2 - alienDeathSequence, 10, 10);
+            g.fillOval((alienX + (alienWidth + alienX)) / 2 + alienDeathSequence, (alienY + (alienHeight + alienY)) / 2 - alienDeathSequence, 10, 10);
+            g.fillOval((alienX + (alienWidth + alienX)) / 2 + alienDeathSequence, (alienY + (alienHeight + alienY)) / 2, 10, 10);
+            g.fillOval((alienX + (alienWidth + alienX)) / 2 + alienDeathSequence, (alienY + (alienHeight + alienY)) / 2 + alienDeathSequence, 10, 10);
+            g.fillOval((alienX + (alienWidth + alienX)) / 2, (alienY + (alienHeight + alienY)) / 2 + alienDeathSequence, 10, 10);
+            g.fillOval((alienX + (alienWidth + alienX)) / 2 - alienDeathSequence, (alienY + (alienHeight + alienY)) / 2 + alienDeathSequence, 10, 10);
+            g.fillOval((alienX + (alienWidth + alienX)) / 2 - alienDeathSequence, (alienY + (alienHeight + alienY)) / 2, 10, 10);
+            alienDeathSequence+=8;
+        }
         if(!humanDied)
             g.drawImage(humanImage, humanX, humanY, null);//draw human ship
         if(!alienDied)
@@ -235,15 +235,7 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
                 g.fillOval(bulletX.get(i), bulletY.get(i), 15, 15);
                 bulletX.set(i, bulletX.get(i) + bulletVelX.get(i));
                 bulletY.set(i, bulletY.get(i) + bulletVelY.get(i));
-                if(bulletDuration.get(i) >= 500){
-                    bulletX.remove(i);
-                    bulletY.remove(i);
-                    bulletVelX.remove(i);
-                    bulletVelY.remove(i);
-                    bulletDuration.remove(i);
-                }else{
-                    bulletDuration.set(i, bulletDuration.get(i) + 1);
-                }
+
                 if((bulletX.get(i) > humanX + 15 && bulletX.get(i) < (humanX + humanWidth - 15)) && (bulletY.get(i) > humanY + 15 && bulletY.get(i) < (humanY + humanHeight - 15)) && !humanDied){
                     humanDied = true;
                     bulletDuration.set(i, 500);
@@ -254,6 +246,15 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
                 }
                 if(bulletX.get(i) > asteroidX.get(0) && bulletX.get(i) < asteroidX.get(0) + 181 && bulletY.get(i) > asteroidY.get(0) && bulletY.get(i) < asteroidY.get(0) + 181){//bullet explodes on asteroid
                     bulletDuration.set(i, 500);
+                }
+                if(bulletDuration.get(i) >= 500){
+                    bulletX.remove(i);
+                    bulletY.remove(i);
+                    bulletVelX.remove(i);
+                    bulletVelY.remove(i);
+                    bulletDuration.remove(i);
+                }else{
+                    bulletDuration.set(i, bulletDuration.get(i) + 1);
                 }
             }
             if(bulletDuration.size() == 0)
