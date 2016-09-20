@@ -33,6 +33,7 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
+        requestFocusInWindow();
 
         URL resource = getClass().getResource("HumanShip.png");//get human fighter
         try{
@@ -87,18 +88,15 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         if(!humanDied) {
             if (c == KeyEvent.VK_LEFT) {//if left arrow key pressed
                 velHumanX = -4;
-                velHumanY = 0;
+
             }
             if (c == KeyEvent.VK_UP) {
-                velHumanX = 0;
                 velHumanY = -4;
             }
             if (c == KeyEvent.VK_RIGHT) {
                 velHumanX = 4;
-                velHumanY = 0;
             }
             if (c == KeyEvent.VK_DOWN) {
-                velHumanX = 0;
                 velHumanY = 4;
             }
             if (c == 47) {//? to fire
@@ -109,19 +107,15 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         if(!alienDied) {
             if (c == 65) {//a
                 velAlienX = -4;
-                velAlienY = 0;
             }
             if (c == 87) {//w
                 velAlienX = 0;
-                velAlienY = -4;
             }
             if (c == 68) {//d
                 velAlienX = 4;
-                velAlienY = 0;
             }
             if (c == 83) {//s
                 velAlienX = 0;
-                velAlienY = 4;
             }
             if (c == 81) {//q to fire
                 fire(2);
@@ -129,7 +123,37 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         }
     }
 
-    public void keyReleased(KeyEvent e){}
+    public void keyReleased(KeyEvent e){
+        int c = e.getKeyCode();
+        if(!humanDied) {
+            if (c == KeyEvent.VK_LEFT) {//if left arrow key pressed
+                velHumanX = 0;
+            }
+            if (c == KeyEvent.VK_UP) {
+                velHumanY = 0;
+            }
+            if (c == KeyEvent.VK_RIGHT) {
+                velHumanX =0;
+            }
+            if (c == KeyEvent.VK_DOWN) {
+                velHumanY = 0;
+            }
+        }
+        if(!alienDied) {
+            if (c == KeyEvent.VK_LEFT) {//if left arrow key pressed
+                velAlienX = 0;
+            }
+            if (c == KeyEvent.VK_UP) {
+                velAlienY = 0;
+            }
+            if (c == KeyEvent.VK_RIGHT) {
+                velAlienX =0;
+            }
+            if (c == KeyEvent.VK_DOWN) {
+                velAlienY = 0;
+            }
+        }
+    }
 
     public void keyTyped(KeyEvent e){}
 
@@ -199,30 +223,30 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
             g.fillPolygon(asteroid);
 
         }
-            if(humanDied && humanDeathSequence <= 400) {
-                g.setColor(Color.RED);
-                g.fillOval((humanX + (humanWidth + humanX)) / 2 - humanDeathSequence, (humanY + (humanHeight + humanY)) / 2 - humanDeathSequence, 10, 10);
-                g.fillOval((humanX + (humanWidth + humanX)) / 2, (humanY + (humanHeight + humanY)) / 2 - humanDeathSequence, 10, 10);
-                g.fillOval((humanX + (humanWidth + humanX)) / 2 + humanDeathSequence, (humanY + (humanHeight + humanY)) / 2 - humanDeathSequence, 10, 10);
-                g.fillOval((humanX + (humanWidth + humanX)) / 2 + humanDeathSequence, (humanY + (humanHeight + humanY)) / 2, 10, 10);
-                g.fillOval((humanX + (humanWidth + humanX)) / 2 + humanDeathSequence, (humanY + (humanHeight + humanY)) / 2 + humanDeathSequence, 10, 10);
-                g.fillOval((humanX + (humanWidth + humanX)) / 2, (humanY + (humanHeight + humanY)) / 2 + humanDeathSequence, 10, 10);
-                g.fillOval((humanX + (humanWidth + humanX)) / 2 - humanDeathSequence, (humanY + (humanHeight + humanY)) / 2 + humanDeathSequence, 10, 10);
-                g.fillOval((humanX + (humanWidth + humanX)) / 2 - humanDeathSequence, (humanY + (humanHeight + humanY)) / 2, 10, 10);
-                humanDeathSequence+=8;
-            }
-            if(alienDied && alienDeathSequence <= 400) {
-                g.setColor(Color.RED);
-                g.fillOval((alienX + (alienWidth + alienX)) / 2 - alienDeathSequence, (alienY + (alienHeight + alienY)) / 2 - alienDeathSequence, 10, 10);
-                g.fillOval((alienX + (alienWidth + alienX)) / 2, (alienY + (alienHeight + alienY)) / 2 - alienDeathSequence, 10, 10);
-                g.fillOval((alienX + (alienWidth + alienX)) / 2 + alienDeathSequence, (alienY + (alienHeight + alienY)) / 2 - alienDeathSequence, 10, 10);
-                g.fillOval((alienX + (alienWidth + alienX)) / 2 + alienDeathSequence, (alienY + (alienHeight + alienY)) / 2, 10, 10);
-                g.fillOval((alienX + (alienWidth + alienX)) / 2 + alienDeathSequence, (alienY + (alienHeight + alienY)) / 2 + alienDeathSequence, 10, 10);
-                g.fillOval((alienX + (alienWidth + alienX)) / 2, (alienY + (alienHeight + alienY)) / 2 + alienDeathSequence, 10, 10);
-                g.fillOval((alienX + (alienWidth + alienX)) / 2 - alienDeathSequence, (alienY + (alienHeight + alienY)) / 2 + alienDeathSequence, 10, 10);
-                g.fillOval((alienX + (alienWidth + alienX)) / 2 - alienDeathSequence, (alienY + (alienHeight + alienY)) / 2, 10, 10);
-                alienDeathSequence+=8;
-            }
+        if(humanDied && humanDeathSequence <= 400) {
+            g.setColor(Color.RED);
+            g.fillOval((humanX + (humanWidth + humanX)) / 2 - humanDeathSequence, (humanY + (humanHeight + humanY)) / 2 - humanDeathSequence, 10, 10);
+            g.fillOval((humanX + (humanWidth + humanX)) / 2, (humanY + (humanHeight + humanY)) / 2 - humanDeathSequence, 10, 10);
+            g.fillOval((humanX + (humanWidth + humanX)) / 2 + humanDeathSequence, (humanY + (humanHeight + humanY)) / 2 - humanDeathSequence, 10, 10);
+            g.fillOval((humanX + (humanWidth + humanX)) / 2 + humanDeathSequence, (humanY + (humanHeight + humanY)) / 2, 10, 10);
+            g.fillOval((humanX + (humanWidth + humanX)) / 2 + humanDeathSequence, (humanY + (humanHeight + humanY)) / 2 + humanDeathSequence, 10, 10);
+            g.fillOval((humanX + (humanWidth + humanX)) / 2, (humanY + (humanHeight + humanY)) / 2 + humanDeathSequence, 10, 10);
+            g.fillOval((humanX + (humanWidth + humanX)) / 2 - humanDeathSequence, (humanY + (humanHeight + humanY)) / 2 + humanDeathSequence, 10, 10);
+            g.fillOval((humanX + (humanWidth + humanX)) / 2 - humanDeathSequence, (humanY + (humanHeight + humanY)) / 2, 10, 10);
+            humanDeathSequence+=8;
+        }
+        if(alienDied && alienDeathSequence <= 400) {
+            g.setColor(Color.RED);
+            g.fillOval((alienX + (alienWidth + alienX)) / 2 - alienDeathSequence, (alienY + (alienHeight + alienY)) / 2 - alienDeathSequence, 10, 10);
+            g.fillOval((alienX + (alienWidth + alienX)) / 2, (alienY + (alienHeight + alienY)) / 2 - alienDeathSequence, 10, 10);
+            g.fillOval((alienX + (alienWidth + alienX)) / 2 + alienDeathSequence, (alienY + (alienHeight + alienY)) / 2 - alienDeathSequence, 10, 10);
+            g.fillOval((alienX + (alienWidth + alienX)) / 2 + alienDeathSequence, (alienY + (alienHeight + alienY)) / 2, 10, 10);
+            g.fillOval((alienX + (alienWidth + alienX)) / 2 + alienDeathSequence, (alienY + (alienHeight + alienY)) / 2 + alienDeathSequence, 10, 10);
+            g.fillOval((alienX + (alienWidth + alienX)) / 2, (alienY + (alienHeight + alienY)) / 2 + alienDeathSequence, 10, 10);
+            g.fillOval((alienX + (alienWidth + alienX)) / 2 - alienDeathSequence, (alienY + (alienHeight + alienY)) / 2 + alienDeathSequence, 10, 10);
+            g.fillOval((alienX + (alienWidth + alienX)) / 2 - alienDeathSequence, (alienY + (alienHeight + alienY)) / 2, 10, 10);
+            alienDeathSequence+=8;
+        }
         if(!humanDied)
             g.drawImage(humanImage, humanX, humanY, null);//draw human ship
         if(!alienDied)
@@ -292,49 +316,19 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         bulletDuration.add(0);
         switch(whoShot){
             case 1:
-                if (velHumanX > 0) {
-                    bulletX.add(humanX + humanWidth + 6);
-                    bulletY.add(humanY + (humanHeight / 2));
-                    bulletVelX.add(velHumanX + 1);
-                    bulletVelY.add(0);
-                } else if (velHumanX < 0) {
-                    bulletX.add(humanX - 6);
-                    bulletY.add(humanY + (humanHeight / 2));
-                    bulletVelX.add(velHumanX - 1);
-                    bulletVelY.add(0);
-                } else if (velHumanY > 0) {
-                    bulletY.add(humanY + humanHeight + 6);
-                    bulletX.add(humanX + (humanWidth / 2));
-                    bulletVelY.add(velHumanY + 1);
-                    bulletVelX.add(0);
-                } else if (velHumanY < 0) {
-                    bulletY.add(humanY - 6);
-                    bulletX.add(humanX + (humanWidth / 2));
-                    bulletVelY.add(velHumanY - 1);
-                    bulletVelX.add(0);
+                if(!(velHumanX == 0 && velHumanY == 0)) {
+                    bulletVelX.add(velHumanX);
+                    bulletVelY.add(velHumanY);
+                    bulletX.add((humanX + humanWidth / 2) + (velHumanX * 40));
+                    bulletY.add((humanY + humanHeight / 2) + (velHumanY * 40));
                 }
                 break;
             case 2:
-                if (velAlienX > 0) {
-                    bulletX.add(alienX + alienWidth + 4);
-                    bulletY.add(alienY + (alienHeight / 2));
-                    bulletVelX.add(velAlienX + 1);
-                    bulletVelY.add(0);
-                } else if (velAlienX < 0) {
-                    bulletX.add(alienX - 4);
-                    bulletY.add(alienY + (alienHeight / 2));
-                    bulletVelX.add(velAlienX - 1);
-                    bulletVelY.add(0);
-                } else if (velAlienY > 0) {
-                    bulletY.add(alienY + alienHeight + 4);
-                    bulletX.add(alienX + (alienWidth / 2));
-                    bulletVelY.add(velAlienY + 1);
-                    bulletVelX.add(0);
-                } else if (velAlienY < 0) {
-                    bulletY.add(alienY - 4);
-                    bulletX.add(alienX + (alienWidth / 2));
-                    bulletVelY.add(velAlienY - 1);
-                    bulletVelX.add(0);
+                if(!(velAlienX == 0 && velAlienY == 0)) {
+                    bulletVelX.add(velAlienX);
+                    bulletVelY.add(velAlienY);
+                    bulletX.add((alienX + alienWidth / 2) + (velAlienX * 40));
+                    bulletY.add((alienY + alienHeight / 2) + (velAlienY * 40));
                 }
                 break;
         }
