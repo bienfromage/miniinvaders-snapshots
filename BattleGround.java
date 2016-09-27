@@ -84,6 +84,7 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
     }
 
     public void keyPressed(KeyEvent e){
+        System.out.println("key");
         int c = e.getKeyCode();
         if(!humanDied) {
             if (c == KeyEvent.VK_LEFT) {//if left arrow key pressed
@@ -109,13 +110,13 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
                 velAlienX = -4;
             }
             if (c == 87) {//w
-                velAlienX = 0;
+                velAlienY = -4;
             }
             if (c == 68) {//d
                 velAlienX = 4;
             }
             if (c == 83) {//s
-                velAlienX = 0;
+                velAlienY = 4;
             }
             if (c == 81) {//q to fire
                 fire(2);
@@ -140,16 +141,16 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
             }
         }
         if(!alienDied) {
-            if (c == KeyEvent.VK_LEFT) {//if left arrow key pressed
+            if (c == 65) {//if left arrow key pressed
                 velAlienX = 0;
             }
-            if (c == KeyEvent.VK_UP) {
+            if (c == 87) {
                 velAlienY = 0;
             }
-            if (c == KeyEvent.VK_RIGHT) {
+            if (c == 68) {
                 velAlienX =0;
             }
-            if (c == KeyEvent.VK_DOWN) {
+            if (c == 83) {
                 velAlienY = 0;
             }
         }
@@ -295,9 +296,10 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
     public static void main(String[] args){
         BattleGround battlescreen = new BattleGround();
         JFrame frame = new JFrame("Mini Invaders 1.0");
+        frame.setSize(new Dimension(200, 200));
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-        frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
         frame.add(battlescreen);
     }
 
@@ -317,16 +319,16 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         switch(whoShot){
             case 1:
                 if(!(velHumanX == 0 && velHumanY == 0)) {
-                    bulletVelX.add(velHumanX);
-                    bulletVelY.add(velHumanY);
+                    bulletVelX.add(velHumanX*2);
+                    bulletVelY.add(velHumanY*2);
                     bulletX.add((humanX + humanWidth / 2) + (velHumanX * 40));
                     bulletY.add((humanY + humanHeight / 2) + (velHumanY * 40));
                 }
                 break;
             case 2:
                 if(!(velAlienX == 0 && velAlienY == 0)) {
-                    bulletVelX.add(velAlienX);
-                    bulletVelY.add(velAlienY);
+                    bulletVelX.add(velAlienX*2);
+                    bulletVelY.add(velAlienY*2);
                     bulletX.add((alienX + alienWidth / 2) + (velAlienX * 40));
                     bulletY.add((alienY + alienHeight / 2) + (velAlienY * 40));
                 }
