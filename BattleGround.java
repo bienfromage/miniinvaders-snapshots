@@ -84,7 +84,6 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
     }
 
     public void keyPressed(KeyEvent e){
-        System.out.println("key");
         int c = e.getKeyCode();
         if(!humanDied) {
             if (c == KeyEvent.VK_LEFT) {//if left arrow key pressed
@@ -100,7 +99,7 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
             if (c == KeyEvent.VK_DOWN) {
                 velHumanY = 4;
             }
-            if (c == 47) {//? to fire
+            if (c == 92) {//"\" to fire
                 fire(1);
             }
         }
@@ -118,39 +117,39 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
             if (c == 83) {//s
                 velAlienY = 4;
             }
-            if (c == 81) {//q to fire
+            if (c == 192) {//` to fire
                 fire(2);
             }
         }
     }
 
     public void keyReleased(KeyEvent e){
-        int c = e.getKeyCode();
+        int y= e.getKeyCode();
         if(!humanDied) {
-            if (c == KeyEvent.VK_LEFT) {//if left arrow key pressed
+            if (y== KeyEvent.VK_LEFT) {//if left arrow key pressed
                 velHumanX = 0;
             }
-            if (c == KeyEvent.VK_UP) {
+            if (y== KeyEvent.VK_UP) {
                 velHumanY = 0;
             }
-            if (c == KeyEvent.VK_RIGHT) {
+            if (y== KeyEvent.VK_RIGHT) {
                 velHumanX =0;
             }
-            if (c == KeyEvent.VK_DOWN) {
+            if (y== KeyEvent.VK_DOWN) {
                 velHumanY = 0;
             }
         }
         if(!alienDied) {
-            if (c == 65) {//if left arrow key pressed
+            if (y== 65) {//if left arrow key pressed
                 velAlienX = 0;
             }
-            if (c == 87) {
+            if (y== 87) {
                 velAlienY = 0;
             }
-            if (c == 68) {
+            if (y== 68) {
                 velAlienX =0;
             }
-            if (c == 83) {
+            if (y== 83) {
                 velAlienY = 0;
             }
         }
@@ -262,16 +261,24 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
                 bulletY.set(i, bulletY.get(i) + bulletVelY.get(i));
                 if((bulletX.get(i) > humanX + 15 && bulletX.get(i) < (humanX + humanWidth - 15)) && (bulletY.get(i) > humanY + 15 && bulletY.get(i) < (humanY + humanHeight - 15)) && !humanDied){
                     humanDied = true;
-                    bulletDuration.set(i, 500);
+                    bulletDuration.set(i, 100);//erase bullet
                 }
                 if((bulletX.get(i) > alienX + 15 && bulletX.get(i) < (alienX + alienWidth - 15)) && (bulletY.get(i) > alienY + 8 && bulletY.get(i) < (alienY + alienHeight - 15)) && !alienDied){
                     alienDied = true;
+                    bulletDuration.set(i, 100);//erase bullet
+                }
+                if(bulletX.get(i) < -15)    //wrap bullets around screen
+                    bulletX.set(i,width-15);
+                if(bulletX.get(i) > width)
+                    bulletX.set(i, -15);
+                if(bulletY.get(i) < -15)
+                    bulletY.set(i,height-15);
+                if(bulletY.get(i) > height)
+                    bulletY.set(i, -15);
+                if(bulletX.get(i) > asteroidX.get(0) && bulletX.get(i) < asteroidX.get(0) + 181 && bulletY.get(i) > asteroidY.get(0) && bulletY.get(i) < asteroidY.get(0) + 181) {//bullet explodes on asteroid
                     bulletDuration.set(i, 500);
                 }
-                if(bulletX.get(i) > asteroidX.get(0) && bulletX.get(i) < asteroidX.get(0) + 181 && bulletY.get(i) > asteroidY.get(0) && bulletY.get(i) < asteroidY.get(0) + 181){//bullet explodes on asteroid
-                    bulletDuration.set(i, 500);
-                }
-                if(bulletDuration.get(i) >= 500){
+                if(bulletDuration.get(i) >= 100){
                     bulletX.remove(i);
                     bulletY.remove(i);
                     bulletVelX.remove(i);
