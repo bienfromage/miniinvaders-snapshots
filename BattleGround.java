@@ -175,7 +175,7 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
             rockX = fromage.nextInt(width) - 180;
             rockY = fromage.nextInt(height) - 180;
 
-            while((rockX > humanX - 181 && rockX < humanX + humanWidth && rockY < humanY + humanHeight && rockY > humanY - 181) || (rockX > alienX - 181 && rockX < alienX + alienWidth && rockY < alienY + alienHeight && rockY > alienY - 181)){
+            while((rockX > humanX - 181 && rockX < humanX + humanWidth && rockY < humanY + humanHeight && rockY > humanY - 181) || (rockX > alienX - 181 && rockX < alienX + alienWidth && rockY < alienY + alienHeight && rockY > alienY - 181) || (rockX < 0 || rockY <0)){
                 rockX = fromage.nextInt(width)- 180;
                 rockY = fromage.nextInt(height) - 180;
             }
