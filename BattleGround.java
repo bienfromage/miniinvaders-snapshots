@@ -99,7 +99,7 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
             if (c == KeyEvent.VK_DOWN) {
                 velHumanY = 4;
             }
-            if (c == 92) {//"\" to fire
+            if (c == 10) {//"enter" to fire
                 fire(1);
             }
         }
@@ -117,7 +117,7 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
             if (c == 83) {//s
                 velAlienY = 4;
             }
-            if (c == 192) {//` to fire
+            if (c == 32) {//"space" to fire
                 fire(2);
             }
         }
@@ -171,7 +171,7 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
             }
             asteroids = fromage.nextInt(5) + 2;//randomly generate asteroids
 
-            int rockX, rockY;
+            int rockX, rockY, rockA, rockB;
             rockX = fromage.nextInt(width) - 180;
             rockY = fromage.nextInt(height) - 180;
 
@@ -180,16 +180,16 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
                 rockY = fromage.nextInt(height) - 180;
             }
 
-            asteroidX.add(rockX);//pt 1
-            asteroidX.add(rockX - fromage.nextInt(41)+20);//2
-            asteroidX.add(rockX - fromage.nextInt(31)+40);//3
-            asteroidX.add(rockX + fromage.nextInt(4)-2);//4
-            asteroidX.add(rockX + fromage.nextInt(31)+40);//5
-            asteroidX.add(rockX + fromage.nextInt(31)+150);//6
-            asteroidX.add(rockX + fromage.nextInt(31)+130);//7
-            asteroidX.add(rockX + fromage.nextInt(31)+80);//8
-            asteroidX.add(rockX + fromage.nextInt(31)+40);//9
-            asteroidX.add(rockX);//10
+            asteroidX.add(rockX);//pt 0
+            asteroidX.add(rockX - fromage.nextInt(41)+20);//1
+            asteroidX.add(rockX - fromage.nextInt(31)+40);//2
+            asteroidX.add(rockX + fromage.nextInt(4)-2);//3
+            asteroidX.add(rockX + fromage.nextInt(31)+40);//4
+            asteroidX.add(rockX + fromage.nextInt(31)+150);//5
+            asteroidX.add(rockX + fromage.nextInt(31)+130);//6
+            asteroidX.add(rockX + fromage.nextInt(31)+80);//7
+            asteroidX.add(rockX + fromage.nextInt(31)+40);//8
+            asteroidX.add(rockX);//9
             asteroidY.add(rockY);//pt 1
             asteroidY.add(rockY + fromage.nextInt(31)+40);//2
             asteroidY.add(rockY + fromage.nextInt(31)+80);//3
@@ -200,14 +200,45 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
             asteroidY.add(rockY + fromage.nextInt(31)+60);//8
             asteroidY.add(rockY + fromage.nextInt(31)+40);//9
             asteroidY.add(rockY);//10
-
+            
+            do{
+                rockA = fromage.nextInt(width) - 180;
+                rockB = fromage.nextInt(height) - 180;
+            }while((rockA > humanX - 181 && rockA < humanX + humanWidth && rockB < humanY + humanHeight && rockB > humanY - 181) || (rockA > alienX - 181 && rockA < alienX + alienWidth && rockB < alienY + alienHeight && rockB > alienY - 181) || (rockA < 0 || rockB <0));
+            
+            asteroidX.add(rockA);//10
+            asteroidX.add(rockA-(fromage.nextInt(21) + 20));//11
+            asteroidX.add(rockA-(fromage.nextInt(31) + 20));//12
+            asteroidX.add(rockA-fromage.nextInt(4) - 2);//13
+            asteroidX.add(rockA+fromage.nextInt(31) + 30);//14
+            asteroidX.add(rockA+fromage.nextInt(31) + 150);//15
+            asteroidX.add(rockA+fromage.nextInt(31) + 130);//16
+            asteroidX.add(rockA+fromage.nextInt(31) + 80);//17
+            asteroidX.add(rockA+fromage.nextInt(31) + 40);//18
+            asteroidX.add(rockA);//19
+            asteroidY.add(rockB);
+            asteroidY.add(rockB+fromage.nextInt(31) + 40);
+            asteroidY.add(rockB+fromage.nextInt(31) + 80);
+            asteroidY.add(rockB+ fromage.nextInt(31) + 150);
+            asteroidY.add(rockB+ fromage.nextInt(31) + 150);
+            asteroidY.add(rockB+ fromage.nextInt(31) + 80);
+            asteroidY.add(rockB+ fromage.nextInt(31) + 20);
+            asteroidY.add(rockB+ fromage.nextInt(31) + 5);
+            asteroidY.add(rockB+ fromage.nextInt(31));
+            asteroidY.add(rockB);
+            
             Polygon asteroid = new Polygon();
-            for(int i = 0; i < asteroidX.size(); i++) {
+            for(int i = 0; i < 10; i++) {
                 asteroid.addPoint(asteroidX.get(i), asteroidY.get(i));
             }
             g.setColor(Color.GRAY);
             g.fillPolygon(asteroid);
-
+            
+            Polygon asteroid1 = new Polygon();
+            for(int i=10;i<20;i++)
+                asteroid1.addPoint(asteroidX.get(i), asteroidY.get(i));
+            g.fillPolygon(asteroid1);
+            
             fieldReady = true;
         }else{
             g.setColor(Color.WHITE);
@@ -216,12 +247,16 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
             }
 
             Polygon asteroid = new Polygon();
-            for(int i = 0; i < asteroidX.size(); i++) {
+            for(int i = 0; i < 10; i++) {
                 asteroid.addPoint(asteroidX.get(i), asteroidY.get(i));
             }
             g.setColor(Color.GRAY);
             g.fillPolygon(asteroid);
 
+            Polygon asteroid1 = new Polygon();
+            for(int i=10;i<20;i++)
+                asteroid1.addPoint(asteroidX.get(i), asteroidY.get(i));
+            g.fillPolygon(asteroid1);
         }
         if(humanDied && humanDeathSequence <= 400) {
             g.setColor(Color.RED);
@@ -275,7 +310,7 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
                     bulletY.set(i,height-15);
                 if(bulletY.get(i) > height)
                     bulletY.set(i, -15);
-                if(bulletX.get(i) > asteroidX.get(0) && bulletX.get(i) < asteroidX.get(0) + 181 && bulletY.get(i) > asteroidY.get(0) && bulletY.get(i) < asteroidY.get(0) + 181) {//bullet explodes on asteroid
+                if((bulletX.get(i) > asteroidX.get(0) && bulletX.get(i) < asteroidX.get(0) + 181 && bulletY.get(i) > asteroidY.get(0) && bulletY.get(i) < asteroidY.get(0) + 181)||(bulletX.get(i) > asteroidX.get(10) && bulletX.get(i) < asteroidX.get(10) + 181 && bulletY.get(i) > asteroidY.get(10) && bulletY.get(i) < asteroidY.get(10) + 181)) {//bullet explodes on asteroid
                     bulletDuration.set(i, 500);
                 }
                 if(bulletDuration.get(i) >= 100){
@@ -292,10 +327,10 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
                 bulletsActive = false;
         }
 
-        if((humanX+humanWidth) > asteroidX.get(0) && humanX < (asteroidX.get(0)+181) && (humanY+humanHeight) > asteroidY.get(0) && humanY<(asteroidY.get(0)+181)){//Did player1 hit asteroid?
+        if(((humanX+humanWidth) > asteroidX.get(0) && humanX < (asteroidX.get(0)+160) && (humanY+humanHeight) > asteroidY.get(0)+50 && humanY<(asteroidY.get(0)+181))||((humanX+humanWidth) > asteroidX.get(10) && humanX < (asteroidX.get(10)+160) && (humanY+humanHeight) > asteroidY.get(10)-20 && humanY<(asteroidY.get(10)+181))){//Did player1 hit asteroid?
             humanDied = true;
         }
-        if((alienX+alienWidth) > asteroidX.get(0) && alienX < (asteroidX.get(0)+181) && (alienY+alienHeight) > asteroidY.get(0) && alienY<(asteroidY.get(0)+181)){//Did player1 hit asteroid?
+        if(((alienX+alienWidth) > asteroidX.get(0) && alienX < (asteroidX.get(0)+181) && (alienY+alienHeight) > asteroidY.get(0)+50 && alienY<(asteroidY.get(0)+181))||((alienX+alienWidth) > asteroidX.get(10) && alienX < (asteroidX.get(10)+160) && (alienY+alienHeight) > asteroidY.get(10)-20 && alienY<(asteroidY.get(10)+181))){//Did player1 hit asteroid?
             alienDied = true;
         }
     }
