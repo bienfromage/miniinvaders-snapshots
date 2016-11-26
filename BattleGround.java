@@ -55,10 +55,12 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         alienWidth = alienImage.getWidth();
         
         Random cow = new Random();
-        humanX = cow.nextInt(width);
-        humanY = cow.nextInt(height);
-        alienX = cow.nextInt(width);
-        alienY = cow.nextInt(height);
+        humanX = cow.nextInt(width-humanWidth);
+        humanY = cow.nextInt(height-humanHeight);
+        do{
+            alienX = cow.nextInt(width-alienWidth);
+            alienY = cow.nextInt(height-alienHeight);
+        }while((alienX+alienWidth >= humanX && alienX <= humanX+humanWidth && alienY+alienHeight >= humanY && alienY <= humanY+humanHeight));
         tm.start();
     }
 
@@ -322,7 +324,7 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
                     bulletY.set(i,height-15);
                 if(bulletY.get(i) > height)
                     bulletY.set(i, -15);
-                if((bulletX.get(i) > asteroidX.get(0) && bulletX.get(i) < asteroidX.get(0) + 181 && bulletY.get(i) > asteroidY.get(0) && bulletY.get(i) < asteroidY.get(0) + 181)||(bulletX.get(i) > asteroidX.get(10) && bulletX.get(i) < asteroidX.get(10) + 181 && bulletY.get(i) > asteroidY.get(10) && bulletY.get(i) < asteroidY.get(10) + 181)) {//bullet explodes on asteroid
+                if((bulletX.get(i) > asteroidX.get(0) && bulletX.get(i) < asteroidX.get(0) + 181 && bulletY.get(i) > asteroidY.get(0) && bulletY.get(i) < asteroidY.get(0) + 181)||(bulletX.get(i) > asteroidX.get(10) && bulletX.get(i) < asteroidX.get(10) + 150 && bulletY.get(i) > asteroidY.get(10)+20 && bulletY.get(i) < asteroidY.get(10) + 150)) {//bullet explodes on asteroid
                     bulletDuration.set(i, 500);
                 }
                 if(bulletDuration.get(i) >= 100){
@@ -339,10 +341,10 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
                 bulletsActive = false;
         }
 
-        if(((humanX+humanWidth) > asteroidX.get(0) && humanX < (asteroidX.get(0)+160) && (humanY+humanHeight) > asteroidY.get(0)+50 && humanY<(asteroidY.get(0)+160))||((humanX+humanWidth) > asteroidX.get(10) && humanX < (asteroidX.get(10)+160) && (humanY+humanHeight) > asteroidY.get(10)-20 && humanY<(asteroidY.get(10)+140))){//Did player1 hit asteroid?
+        if(((humanX+humanWidth) > asteroidX.get(0) && humanX < (asteroidX.get(0)+120) && (humanY+humanHeight) > asteroidY.get(0)+50 && humanY<(asteroidY.get(0)+130))||((humanX+humanWidth) > asteroidX.get(10) && humanX < (asteroidX.get(10)+160) && (humanY+humanHeight) > asteroidY.get(10)-20 && humanY<(asteroidY.get(10)+120))){//Did player1 hit asteroid?
             humanDied = true;
         }
-        if(((alienX+alienWidth) > asteroidX.get(0) && alienX < (asteroidX.get(0)+181) && (alienY+alienHeight) > asteroidY.get(0)+50 && alienY<(asteroidY.get(0)+160))||((alienX+alienWidth) > asteroidX.get(10) && alienX < (asteroidX.get(10)+160) && (alienY+alienHeight) > asteroidY.get(10)-20 && alienY<(asteroidY.get(10)+140))){//Did player1 hit asteroid?
+        if(((alienX+alienWidth) > asteroidX.get(0) && alienX < (asteroidX.get(0)+120) && (alienY+alienHeight) > asteroidY.get(0)+50 && alienY<(asteroidY.get(0)+130))||((alienX+alienWidth) > asteroidX.get(10) && alienX < (asteroidX.get(10)+160) && (alienY+alienHeight) > asteroidY.get(10)-20 && alienY<(asteroidY.get(10)+120))){//Did player1 hit asteroid?
             alienDied = true;
         }
     }
