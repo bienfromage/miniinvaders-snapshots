@@ -53,6 +53,12 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         humanWidth = humanImage.getWidth();
         alienHeight = alienImage.getHeight();
         alienWidth = alienImage.getWidth();
+        
+        Random cow = new Random();
+        humanX = cow.nextInt(width);
+        humanY = cow.nextInt(height);
+        alienX = cow.nextInt(width);
+        alienY = cow.nextInt(height);
         tm.start();
     }
 
@@ -127,30 +133,38 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         int y= e.getKeyCode();
         if(!humanDied) {
             if (y== KeyEvent.VK_LEFT) {//if left arrow key pressed
-                velHumanX = 0;
+                if(!(velHumanX == 4))
+                    velHumanX = 0;
             }
             if (y== KeyEvent.VK_UP) {
-                velHumanY = 0;
+                if(!(velHumanY == 4))
+                    velHumanY = 0;
             }
             if (y== KeyEvent.VK_RIGHT) {
-                velHumanX =0;
+                if(!(velHumanX == -4))
+                    velHumanX =0;
             }
             if (y== KeyEvent.VK_DOWN) {
-                velHumanY = 0;
+                if(!(velHumanY == -4))
+                    velHumanY = 0;
             }
         }
         if(!alienDied) {
-            if (y== 65) {//if left arrow key pressed
-                velAlienX = 0;
+            if (y== 65) {//a
+                if(!(velAlienX == 4))
+                    velAlienX = 0;
             }
-            if (y== 87) {
-                velAlienY = 0;
+            if (y== 87) {//w
+                if(!(velAlienX == 4))
+                    velAlienY = 0;
             }
-            if (y== 68) {
-                velAlienX =0;
+            if (y== 68) {//d
+                if(!(velAlienX == -4))
+                    velAlienX =0;
             }
-            if (y== 83) {
-                velAlienY = 0;
+            if (y== 83) {//s
+                if(!(velAlienX == -4))
+                    velAlienY = 0;
             }
         }
     }
@@ -171,14 +185,12 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
             }
             asteroids = fromage.nextInt(5) + 2;//randomly generate asteroids
 
-            int rockX, rockY, rockA, rockB;
-            rockX = fromage.nextInt(width) - 180;
-            rockY = fromage.nextInt(height) - 180;
+           int rockX, rockY, rockA, rockB;
 
-            while((rockX > humanX - 181 && rockX < humanX + humanWidth && rockY < humanY + humanHeight && rockY > humanY - 181) || (rockX > alienX - 181 && rockX < alienX + alienWidth && rockY < alienY + alienHeight && rockY > alienY - 181) || (rockX < 0 || rockY <0)){
+           do{
                 rockX = fromage.nextInt(width)- 180;
                 rockY = fromage.nextInt(height) - 180;
-            }
+           } while((rockX > humanX - 181 && rockX < humanX + humanWidth && rockY < humanY + humanHeight && rockY > humanY - 181) || (rockX > alienX - 181 && rockX < alienX + alienWidth && rockY < alienY + alienHeight && rockY > alienY - 181) || (rockX < 0 || rockY <0));
 
             asteroidX.add(rockX);//pt 0
             asteroidX.add(rockX - fromage.nextInt(41)+20);//1
@@ -327,17 +339,17 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
                 bulletsActive = false;
         }
 
-        if(((humanX+humanWidth) > asteroidX.get(0) && humanX < (asteroidX.get(0)+160) && (humanY+humanHeight) > asteroidY.get(0)+50 && humanY<(asteroidY.get(0)+181))||((humanX+humanWidth) > asteroidX.get(10) && humanX < (asteroidX.get(10)+160) && (humanY+humanHeight) > asteroidY.get(10)-20 && humanY<(asteroidY.get(10)+181))){//Did player1 hit asteroid?
+        if(((humanX+humanWidth) > asteroidX.get(0) && humanX < (asteroidX.get(0)+160) && (humanY+humanHeight) > asteroidY.get(0)+50 && humanY<(asteroidY.get(0)+160))||((humanX+humanWidth) > asteroidX.get(10) && humanX < (asteroidX.get(10)+160) && (humanY+humanHeight) > asteroidY.get(10)-20 && humanY<(asteroidY.get(10)+140))){//Did player1 hit asteroid?
             humanDied = true;
         }
-        if(((alienX+alienWidth) > asteroidX.get(0) && alienX < (asteroidX.get(0)+181) && (alienY+alienHeight) > asteroidY.get(0)+50 && alienY<(asteroidY.get(0)+181))||((alienX+alienWidth) > asteroidX.get(10) && alienX < (asteroidX.get(10)+160) && (alienY+alienHeight) > asteroidY.get(10)-20 && alienY<(asteroidY.get(10)+181))){//Did player1 hit asteroid?
+        if(((alienX+alienWidth) > asteroidX.get(0) && alienX < (asteroidX.get(0)+181) && (alienY+alienHeight) > asteroidY.get(0)+50 && alienY<(asteroidY.get(0)+160))||((alienX+alienWidth) > asteroidX.get(10) && alienX < (asteroidX.get(10)+160) && (alienY+alienHeight) > asteroidY.get(10)-20 && alienY<(asteroidY.get(10)+140))){//Did player1 hit asteroid?
             alienDied = true;
         }
     }
 
     public static void main(String[] args){
         BattleGround battlescreen = new BattleGround();
-        JFrame frame = new JFrame("Mini Invaders 1.0");
+        JFrame frame = new JFrame("MiniInvaders 0.0");
         frame.setSize(new Dimension(200, 200));
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
