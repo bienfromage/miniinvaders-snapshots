@@ -9,7 +9,7 @@ import javax.imageio.*;
 import java.util.Random;
 import java.util.ArrayList;
 
-public class BattleGround extends JPanel implements ActionListener, KeyListener{
+public class BattleGround extends JPanel implements ActionListener{
     Timer tm = new Timer(5, this);
     int humanX = 100, velHumanX = 0, humanY = 100, velHumanY = 0, humanHeight = 0, humanWidth = 0, humanDeathSequence = 0;
     BufferedImage humanImage;
@@ -30,10 +30,10 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
     boolean bulletsActive = false, humanDied = false, alienDied = false;
     int asteroids = 0;
     public BattleGround(){
-        addKeyListener(this);
-        setFocusable(true);
-        setFocusTraversalKeysEnabled(false);
-        requestFocusInWindow();
+        //addKeyListener(this);
+        //setFocusable(true);
+        //setFocusTraversalKeysEnabled(false);
+        //requestFocusInWindow();
 
         URL resource = getClass().getResource("HumanShip.png");//get human fighter
         try{
@@ -61,8 +61,34 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
             alienX = cow.nextInt(width-alienWidth);
             alienY = cow.nextInt(height-alienHeight);
         }while((alienX+alienWidth >= humanX && alienX <= humanX+humanWidth && alienY+alienHeight >= humanY && alienY <= humanY+humanHeight));
-        getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "enter without modifiers");
-        getActionMap().put("enter without modifiers", new AbstractAction(){public void actionPerformed(ActionEvent a){System.out.println("Enter pressed alone");}});
+
+        getInputMap().put(KeyStroke.getKeyStroke("released ENTER"), "enter without modifiers");
+        getActionMap().put("enter without modifiers", new AbstractAction(){public void actionPerformed(ActionEvent a){fire(1);}});
+
+        getInputMap().put(KeyStroke.getKeyStroke("pressed UP"), "up arrow");
+        getActionMap().put("up arrow", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velHumanY = -4;}}});
+
+        getInputMap().put(KeyStroke.getKeyStroke("released UP"), "up arrow released");
+        getActionMap().put("up arrow released", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velHumanY = 0;}}});
+
+        getInputMap().put(KeyStroke.getKeyStroke("pressed LEFT"), "left arrow");
+        getActionMap().put("left arrow", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velHumanX = -4;}}});
+
+        getInputMap().put(KeyStroke.getKeyStroke("released LEFT"), "left arrow released");
+        getActionMap().put("left arrow released", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velHumanX = 0;}}});
+
+        getInputMap().put(KeyStroke.getKeyStroke("pressed DOWN"), "down arrow");
+        getActionMap().put("down arrow", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velHumanY = 4;}}});
+
+        getInputMap().put(KeyStroke.getKeyStroke("released DOWN"), "down arrow released");
+        getActionMap().put("down arrow released", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velHumanY = 0;}}});
+
+        getInputMap().put(KeyStroke.getKeyStroke("pressed RIGHT"), "right arrow");
+        getActionMap().put("right arrow", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velHumanX = 4;}}});
+
+        getInputMap().put(KeyStroke.getKeyStroke("released RIGHT"), "right arrow released");
+        getActionMap().put("right arrow released", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velHumanX = 0;}}});
+
         tm.start();
     }
 
@@ -93,7 +119,7 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
         repaint();
     }
 
-    public void keyPressed(KeyEvent e){
+    /*public void keyPressed(KeyEvent e){
         int c = e.getKeyCode();
         if(!humanDied) {
             if (c == KeyEvent.VK_LEFT) {//if left arrow key pressed
@@ -109,9 +135,9 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
             if (c == KeyEvent.VK_DOWN) {
                 velHumanY = 4;
             }
-            /*if (c == 10) {//"enter" to fire
+            if (c == 10) {//"enter" to fire
                 fire(1);
-            }*/
+            }
         }
         //alien controls
         if(!alienDied) {
@@ -131,9 +157,9 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
                 fire(2);
             }
         }
-    }
+    }*/
 
-    public void keyReleased(KeyEvent e){
+    /*public void keyReleased(KeyEvent e){
         int y= e.getKeyCode();
         if(!humanDied) {
             if (y== KeyEvent.VK_LEFT) {//if left arrow key pressed
@@ -171,9 +197,9 @@ public class BattleGround extends JPanel implements ActionListener, KeyListener{
                     velAlienY = 0;
             }
         }
-    }
+    }*/
 
-    public void keyTyped(KeyEvent e){}
+    //public void keyTyped(KeyEvent e){}
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
