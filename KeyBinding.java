@@ -62,6 +62,7 @@ public class BattleGround extends JPanel implements ActionListener{
             alienY = cow.nextInt(height-alienHeight);
         }while((alienX+alienWidth >= humanX && alienX <= humanX+humanWidth && alienY+alienHeight >= humanY && alienY <= humanY+humanHeight));
 
+        //Human Input
         getInputMap().put(KeyStroke.getKeyStroke("released ENTER"), "enter without modifiers");
         getActionMap().put("enter without modifiers", new AbstractAction(){public void actionPerformed(ActionEvent a){fire(1);}});
 
@@ -88,6 +89,35 @@ public class BattleGround extends JPanel implements ActionListener{
 
         getInputMap().put(KeyStroke.getKeyStroke("released RIGHT"), "right arrow released");
         getActionMap().put("right arrow released", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velHumanX = 0;}}});
+
+        //Alien Input
+        getInputMap().put(KeyStroke.getKeyStroke("released SPACE"), "space without modifiers");
+        getActionMap().put("space without modifiers", new AbstractAction(){public void actionPerformed(ActionEvent a){fire(2);}});
+
+        getInputMap().put(KeyStroke.getKeyStroke("pressed W"), "up");
+        getActionMap().put("up", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velAlienY = -4;}}});
+
+        getInputMap().put(KeyStroke.getKeyStroke("released W"), "up released");
+        getActionMap().put("up released", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velAlienY = 0;}}});
+
+        getInputMap().put(KeyStroke.getKeyStroke("pressed A"), "left");
+        getActionMap().put("left", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velAlienX = -4;}}});
+
+        getInputMap().put(KeyStroke.getKeyStroke("released A"), "left released");
+        getActionMap().put("left released", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velAlienX = 0;}}});
+
+        getInputMap().put(KeyStroke.getKeyStroke("pressed S"), "down");
+        getActionMap().put("down", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velAlienY = 4;}}});
+
+        getInputMap().put(KeyStroke.getKeyStroke("released S"), "down released");
+        getActionMap().put("down released", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velAlienY = 0;}}});
+
+        getInputMap().put(KeyStroke.getKeyStroke("pressed D"), "right");
+        getActionMap().put("right", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velAlienX = 4;}}});
+
+        getInputMap().put(KeyStroke.getKeyStroke("released D"), "right released");
+        getActionMap().put("right released", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velAlienX = 0;}}});
+
 
         tm.start();
     }
