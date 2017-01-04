@@ -1,3 +1,4 @@
+
 //Human = player 1 Alien = player 2
 import java.awt.*;
 import java.awt.event.*;
@@ -30,7 +31,6 @@ public class BattleGround extends JPanel implements ActionListener{
     boolean bulletsActive = false, humanDied = false, alienDied = false;
     int asteroids = 0;
     public BattleGround(){
-
         URL resource = getClass().getResource("HumanShip.png");//get human fighter
         try{
             humanImage = ImageIO.read(resource);
@@ -91,28 +91,28 @@ public class BattleGround extends JPanel implements ActionListener{
         getActionMap().put("space without modifiers", new AbstractAction(){public void actionPerformed(ActionEvent a){fire(2);}});
 
         getInputMap().put(KeyStroke.getKeyStroke("pressed W"), "up");
-        getActionMap().put("up", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velAlienY = -4;}}});
+        getActionMap().put("up", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!alienDied){velAlienY = -4;}}});
 
         getInputMap().put(KeyStroke.getKeyStroke("released W"), "up released");
-        getActionMap().put("up released", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velAlienY = 0;}}});
+        getActionMap().put("up released", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!alienDied){velAlienY = 0;}}});
 
         getInputMap().put(KeyStroke.getKeyStroke("pressed A"), "left");
-        getActionMap().put("left", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velAlienX = -4;}}});
+        getActionMap().put("left", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!alienDied){velAlienX = -4;}}});
 
         getInputMap().put(KeyStroke.getKeyStroke("released A"), "left released");
-        getActionMap().put("left released", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velAlienX = 0;}}});
+        getActionMap().put("left released", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!alienDied){velAlienX = 0;}}});
 
         getInputMap().put(KeyStroke.getKeyStroke("pressed S"), "down");
-        getActionMap().put("down", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velAlienY = 4;}}});
+        getActionMap().put("down", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!alienDied){velAlienY = 4;}}});
 
         getInputMap().put(KeyStroke.getKeyStroke("released S"), "down released");
-        getActionMap().put("down released", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velAlienY = 0;}}});
+        getActionMap().put("down released", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!alienDied){velAlienY = 0;}}});
 
         getInputMap().put(KeyStroke.getKeyStroke("pressed D"), "right");
-        getActionMap().put("right", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velAlienX = 4;}}});
+        getActionMap().put("right", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!alienDied){velAlienX = 4;}}});
 
         getInputMap().put(KeyStroke.getKeyStroke("released D"), "right released");
-        getActionMap().put("right released", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!humanDied){velAlienX = 0;}}});
+        getActionMap().put("right released", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!alienDied){velAlienX = 0;}}});
 
 
         tm.start();
@@ -327,8 +327,8 @@ public class BattleGround extends JPanel implements ActionListener{
         frame.setSize(new Dimension(200, 200));
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
         frame.add(battlescreen);
+        frame.setVisible(true);
     }
 
     public int width(){
