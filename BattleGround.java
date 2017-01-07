@@ -1,4 +1,3 @@
-
 //Human = player 1 Alien = player 2
 import java.awt.*;
 import java.awt.event.*;
@@ -9,6 +8,7 @@ import javax.swing.*;
 import javax.imageio.*;
 import java.util.Random;
 import java.util.ArrayList;
+import javax.sound.sampled.*;
 
 public class BattleGround extends JPanel implements ActionListener{
     Timer tm = new Timer(5, this);
@@ -44,7 +44,25 @@ public class BattleGround extends JPanel implements ActionListener{
         }catch(IOException e){
             System.out.println("This file was improperly installed.\nResource \'" + resource2 + "\' not found.");
         }
-
+        
+        try {
+            // Open an audio input stream.
+            URL url = this.getClass().getClassLoader().getResource("237089__foolboymedia__race-track.wav");
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
+            // Get a sound clip resource.
+            Clip clip = AudioSystem.getClip();
+            // Open audio clip and load samples from the audio input stream.
+            clip.open(audioIn);
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+            System.out.println("This file was improperly installed. Resource 237089__foolboymedia__race-track.wav not supported");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }        
+        
         humanHeight = humanImage.getHeight();
         humanWidth = humanImage.getWidth();
         alienHeight = alienImage.getHeight();
