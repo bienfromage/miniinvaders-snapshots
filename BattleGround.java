@@ -8,6 +8,9 @@ import javax.swing.*;
 import javax.imageio.*;
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.Date;
+import java.text.DateFormat;
 import javax.sound.sampled.*;
 
 public class BattleGround extends JPanel implements ActionListener{
@@ -56,9 +59,9 @@ public class BattleGround extends JPanel implements ActionListener{
             clip.loop(Clip.LOOP_CONTINUOUSLY);
         } catch (UnsupportedAudioFileException e) {
             e.printStackTrace();
-            System.out.println("This file was improperly installed. Resource 237089__foolboymedia__race-track.wav not supported");
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("The music files for this game were improperly installed");
         } catch (LineUnavailableException e) {
             e.printStackTrace();
         }        
@@ -132,7 +135,7 @@ public class BattleGround extends JPanel implements ActionListener{
         getInputMap().put(KeyStroke.getKeyStroke("released D"), "right released");
         getActionMap().put("right released", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!alienDied){velAlienX = 0;}}});
 
-
+        
         tm.start();
     }
 
@@ -340,6 +343,15 @@ public class BattleGround extends JPanel implements ActionListener{
     }
 
     public static void main(String[] args){
+        try{
+            PrintWriter out = new PrintWriter(new FileWriter("score.txt", true), true);
+            Date now = new Date();
+            out.write(DateFormat.getTimeInstance(DateFormat.MEDIUM).format(now));
+            out.close();
+        }catch(IOException e){
+            System.out.println(e);
+        }
+        
         BattleGround battlescreen = new BattleGround();
         JFrame frame = new JFrame("MiniInvaders 0.0");
         frame.setSize(new Dimension(200, 200));
@@ -382,7 +394,16 @@ public class BattleGround extends JPanel implements ActionListener{
         }
     }
     public void theEnd(){
-        if((alienDeathSequence > 400 && !humanDied) || (humanDeathSequence > 400 && !alienDied) || (alienDeathSequence > 400 && humanDeathSequence > 400))
+        if((alienDeathSequence > 400 && !humanDied) || (humanDeathSequence > 400 && !alienDied) || (alienDeathSequence > 400 && humanDeathSequence > 400)){
+            tm.stop();
+            File score = new File("score.txt");
+            try{
+                Scanner input = new Scanner(score);
+                System.out.println(input.nextLine());
+            }catch(IOException e){
+                System.out.println("Score file improperly installed");
+            }
             System.exit(0);
+        }
     }
 }
