@@ -146,7 +146,7 @@ public class BattleGround extends JPanel implements ActionListener{
         alienY += velAlienY;
         if(humanX < -humanWidth){//wrap screen for human player
             humanX = width - humanWidth;
-        }else if(humanX > width - humanWidth){//test
+        }else if(humanX > width){
             humanX = -humanWidth;
         }else if(humanY < -humanHeight){
             humanY = height - humanHeight;
@@ -155,7 +155,7 @@ public class BattleGround extends JPanel implements ActionListener{
         }
         if(alienX < -alienWidth){//wrap screen for human player
             alienX = width - alienWidth;
-        }else if(alienX > width - alienWidth){
+        }else if(alienX > width){
             alienX = -alienWidth;
         }else if(alienY < -alienHeight){
             alienY = height - alienHeight;
@@ -352,13 +352,14 @@ public class BattleGround extends JPanel implements ActionListener{
             System.out.println(e);
         }
         
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         BattleGround battlescreen = new BattleGround();
         JFrame frame = new JFrame("MiniInvaders 0.0");
-        frame.setSize(new Dimension(200, 200));
-        frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+        frame.setSize(screenSize);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(battlescreen);
         frame.setVisible(true);
+        frame.setResizable(false);
     }
 
     public int width(){
