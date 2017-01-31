@@ -3,6 +3,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Random;
+import java.io.*;
 
 public class Main extends JPanel implements MouseListener{
     int width = width();
@@ -15,8 +16,22 @@ public class Main extends JPanel implements MouseListener{
     public void mouseClicked(MouseEvent e){
         int x = e.getX();
         int y = e.getY();
-        if(x > width/2-50 && x<width/2+50 && y > height/2-10 && y < height/2+50){
-            System.out.println("on point");
+        if(x > width/2-100 && x<width/2+100 && y > height/2-40 && y < height/2+40){
+            String player1 = JOptionPane.showInputDialog(null,"Player 1 enter username");
+            if(player1 != null && !("".equals(player1))){
+                String player2 = JOptionPane.showInputDialog(null,"Player 2 enter username");
+                if(player2 != null && !("".equals(player2))){
+                    try{
+                        PrintWriter out = new PrintWriter("score.txt");
+                        out.write(player1 + "à" + player2);
+                        out.close();
+                    }catch(IOException ex){
+                        System.out.println(e);
+                    }
+                    String[] arguments = new String[]{};
+                    BattleGround.main(arguments);
+                }
+            }
         }    
     }
 
@@ -49,8 +64,16 @@ public class Main extends JPanel implements MouseListener{
             g.fillOval(fromage.nextInt(width), fromage.nextInt(height), 5, 5);
         }
 
-        g.setColor(Color.RED);
-        g.fillRect(width/2-50,height/2-10,100,20);
+        g.setColor(Color.YELLOW);
+        g.fillRect(width/2-120,height/2+60,90,30);//tutorial button
+        g.fillRect(width/2+24,height/2+60,105,30);//scores button
+        g.fillRect(width/2-100,height/2-40,200,80);//play button
+        
+        g.setColor(Color.BLACK);
+        g.drawString("CONTROLS", width/2-110, height/2+80);//tutorial
+        g.drawString("LOCAL SCORES", width/2+30, height/2+80);//scores
+        g.setFont(new Font("Arial", Font.PLAIN, 30));//play button text
+        g.drawString("PLAY", width/2-40, height/2+10);
     }
 
     public int width(){
