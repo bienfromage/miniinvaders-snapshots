@@ -8,6 +8,7 @@ import java.io.*;
 public class Main extends JPanel implements MouseListener{
     int width = width();
     int height = height();
+    static JFrame frame;
 
     public Main(){
         addMouseListener(this);
@@ -21,14 +22,8 @@ public class Main extends JPanel implements MouseListener{
             if(player1 != null && !("".equals(player1))){
                 String player2 = JOptionPane.showInputDialog(null,"Player 2 enter username");
                 if(player2 != null && !("".equals(player2))){
-                    try{
-                        PrintWriter out = new PrintWriter("score.txt");
-                        out.write(player1 + "à" + player2);
-                        out.close();
-                    }catch(IOException ex){
-                        System.out.println(e);
-                    }
-                    String[] arguments = new String[]{};
+                    frame.dispose();
+                    String[] arguments = new String[]{player1,player2,"0","0"};
                     BattleGround.main(arguments);
                 }
             }
@@ -45,10 +40,10 @@ public class Main extends JPanel implements MouseListener{
 
     public static void main(String[] args){
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        JFrame frame = new JFrame("MiniInvaders 0.0");
+        Main background = new Main();
+        frame = new JFrame("MiniInvaders 0.0");
         frame.setSize(screenSize);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   
-        Main background = new Main();
         frame.add(background);
         frame.setVisible(true);
         frame.setResizable(false);
