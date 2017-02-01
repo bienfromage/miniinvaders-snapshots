@@ -10,11 +10,14 @@ import java.util.Random;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Date;
-import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import javax.sound.sampled.*;
 
 public class BattleGround extends JPanel implements ActionListener{
+    static JFrame frame;
+    Clip clip;
     Timer tm = new Timer(5, this);
+    static String startTime;
     int humanX = 100, velHumanX = 0, humanY = 100, velHumanY = 0, humanHeight = 0, humanWidth = 0, humanDeathSequence = 0;
     BufferedImage humanImage;
     BufferedImage alienImage;
@@ -53,7 +56,7 @@ public class BattleGround extends JPanel implements ActionListener{
             URL url = this.getClass().getClassLoader().getResource("237089__foolboymedia__race-track.wav");
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
             // Get a sound clip resource.
-            Clip clip = AudioSystem.getClip();
+            clip = AudioSystem.getClip();
             // Open audio clip and load samples from the audio input stream.
             clip.open(audioIn);
             clip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -343,18 +346,14 @@ public class BattleGround extends JPanel implements ActionListener{
     }
 
     public static void main(String[] args){
-        try{
-            PrintWriter out = new PrintWriter(new FileWriter("score.txt", true), true);
-            Date now = new Date();
-            out.write(DateFormat.getTimeInstance(DateFormat.MEDIUM).format(now));
-            out.close();
-        }catch(IOException e){
-            System.out.println(e);
-        }
+        SimpleDateFormat sdfDate = new SimpleDateFormat("HH:mm:ss");
+        Date now = new Date();
+        startTime = sdfDate.format(now);
+        System.out.println(startTime);
         
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         BattleGround battlescreen = new BattleGround();
-        JFrame frame = new JFrame("MiniInvaders 0.0");
+        frame = new JFrame("MiniInvaders 0.0");
         frame.setSize(screenSize);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(battlescreen);
@@ -397,6 +396,7 @@ public class BattleGround extends JPanel implements ActionListener{
     public void theEnd(){
         if((alienDeathSequence > 400 && !humanDied) || (humanDeathSequence > 400 && !alienDied) || (alienDeathSequence > 400 && humanDeathSequence > 400)){
             tm.stop();
+            clip.stop();
             File score = new File("score.txt");
             try{
                 Scanner input = new Scanner(score);
@@ -404,7 +404,9 @@ public class BattleGround extends JPanel implements ActionListener{
             }catch(IOException e){
                 System.out.println("Score file improperly installed");
             }
-            System.exit(0);
+            frame.dispose();
+            String[] arguments = new String[]{};
+            Last.main(arguments);
         }
     }
 }
