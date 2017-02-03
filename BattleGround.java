@@ -15,6 +15,8 @@ import javax.sound.sampled.*;
 
 public class BattleGround extends JPanel implements ActionListener{
     static JFrame frame;
+    static String player1,player2,score1,score2;
+    int timepassed = 0;
     Clip clip;
     Timer tm = new Timer(5, this);
     static String startTime;
@@ -50,7 +52,7 @@ public class BattleGround extends JPanel implements ActionListener{
         }catch(IOException e){
             System.out.println("This file was improperly installed.\nResource \'" + resource2 + "\' not found.");
         }
-        
+
         try {
             // Open an audio input stream.
             URL url = this.getClass().getClassLoader().getResource("237089__foolboymedia__race-track.wav");
@@ -68,7 +70,7 @@ public class BattleGround extends JPanel implements ActionListener{
         } catch (LineUnavailableException e) {
             e.printStackTrace();
         }        
-        
+
         humanHeight = humanImage.getHeight();
         humanWidth = humanImage.getWidth();
         alienHeight = alienImage.getHeight();
@@ -138,7 +140,6 @@ public class BattleGround extends JPanel implements ActionListener{
         getInputMap().put(KeyStroke.getKeyStroke("released D"), "right released");
         getActionMap().put("right released", new AbstractAction(){public void actionPerformed(ActionEvent a){if(!alienDied){velAlienX = 0;}}});
 
-        
         tm.start();
     }
 
@@ -165,6 +166,7 @@ public class BattleGround extends JPanel implements ActionListener{
         }else if(alienY > height - alienHeight){
             alienY = -alienHeight;
         }
+        timepassed++;
         theEnd();
         repaint();
     }
@@ -346,11 +348,11 @@ public class BattleGround extends JPanel implements ActionListener{
     }
 
     public static void main(String[] args){
-        SimpleDateFormat sdfDate = new SimpleDateFormat("HH:mm:ss");
-        Date now = new Date();
-        startTime = sdfDate.format(now);
-        System.out.println(startTime);
-        
+        player1 = args[0];
+        player2 = args[1];
+        score1 = args[2];
+        score2 = args[3];
+
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         BattleGround battlescreen = new BattleGround();
         frame = new JFrame("MiniInvaders 0.0");
@@ -376,36 +378,39 @@ public class BattleGround extends JPanel implements ActionListener{
         bulletDuration.add(0);
         switch(whoShot){
             case 1:
-                if(!(velHumanX == 0 && velHumanY == 0)) {
-                    bulletVelX.add(velHumanX*2);
-                    bulletVelY.add(velHumanY*2);
-                    bulletX.add((humanX + humanWidth / 2) + (velHumanX * 40));
-                    bulletY.add((humanY + humanHeight / 2) + (velHumanY * 40));
-                }
-                break;
+            if(!(velHumanX == 0 && velHumanY == 0)) {
+                bulletVelX.add(velHumanX*2);
+                bulletVelY.add(velHumanY*2);
+                bulletX.add((humanX + humanWidth / 2) + (velHumanX * 40));
+                bulletY.add((humanY + humanHeight / 2) + (velHumanY * 40));
+            }
+            break;
             case 2:
-                if(!(velAlienX == 0 && velAlienY == 0)) {
-                    bulletVelX.add(velAlienX*2);
-                    bulletVelY.add(velAlienY*2);
-                    bulletX.add((alienX + alienWidth / 2) + (velAlienX * 40));
-                    bulletY.add((alienY + alienHeight / 2) + (velAlienY * 40));
-                }
-                break;
+            if(!(velAlienX == 0 && velAlienY == 0)) {
+                bulletVelX.add(velAlienX*2);
+                bulletVelY.add(velAlienY*2);
+                bulletX.add((alienX + alienWidth / 2) + (velAlienX * 40));
+                bulletY.add((alienY + alienHeight / 2) + (velAlienY * 40));
+            }
+            break;
         }
     }
+
     public void theEnd(){
         if((alienDeathSequence > 400 && !humanDied) || (humanDeathSequence > 400 && !alienDied) || (alienDeathSequence > 400 && humanDeathSequence > 400)){
             tm.stop();
-            clip.stop();
-            File score = new File("score.txt");
-            try{
-                Scanner input = new Scanner(score);
-                System.out.println(input.nextLine());
-            }catch(IOException e){
-                System.out.println("Score file improperly installed");
+            if(alienDeathSequence > 400 && !humanDied){
+                int score = Integer.parseInt(score1);
+                score=score+10000-timepassed;
+                score1 = Integer.toString(score);
+            }else if(humanDeathSequence > 400 && !alienDied){
+                int score = Integer.parseInt(score2);
+                score=score+10000-timepassed;
+                score2 = Integer.toString(score);
             }
+            clip.stop();
             frame.dispose();
-            String[] arguments = new String[]{};
+            String[] arguments = new String[]{player1,player2,score1,score2};
             Last.main(arguments);
         }
     }
