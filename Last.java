@@ -9,6 +9,7 @@ public class Last extends JPanel implements MouseListener{
     int width = width();
     int height = height();
     static JFrame frame;
+    static String player1,player2,score1,score2;
 
     public Last(){
         addMouseListener(this);
@@ -19,7 +20,7 @@ public class Last extends JPanel implements MouseListener{
         int y = e.getY();
         if(x > width/2-100 && x<width/2+100 && y > height/2-40 && y < height/2+40){
             frame.dispose();
-            String[] arguments = new String[]{};
+            String[] arguments = new String[]{player1,player2,score1,score2};
             BattleGround.main(arguments);
         }    
     }
@@ -33,6 +34,11 @@ public class Last extends JPanel implements MouseListener{
     public void mouseReleased(MouseEvent e) {}
 
     public static void main(String[] args){
+        player1 = args[0];
+        player2 = args[1];
+        score1 = args[2];
+        score2 = args[3];
+        
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Last background = new Last();
         frame = new JFrame("MiniInvaders 0.0");
@@ -60,9 +66,13 @@ public class Last extends JPanel implements MouseListener{
         
         g.setColor(Color.BLACK);
         g.drawString("CONTROLS", width/2-110, height/2+80);//tutorial
-        g.drawString("END MATCH", width/2+30, height/2+80);//scores
-        g.setFont(new Font("Arial", Font.PLAIN, 30));//play button text
-        g.drawString("PLAY AGAIN", width/2-40, height/2+10);
+        g.drawString("END MATCH", width/2+40, height/2+80);//scores
+        g.setFont(new Font("Arial", Font.PLAIN, 20));//play button text
+        g.drawString("PLAY AGAIN", width/2-55, height/2+10);
+        g.setColor(Color.YELLOW);
+        g.setFont(new Font("Arial", Font.PLAIN, 30));
+        g.drawString(player1+": "+score1,20,30);
+        g.drawString(player2+": "+score2,20,70);
     }
 
     public int width(){
