@@ -1,9 +1,7 @@
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
-import java.util.ArrayList;
 import java.util.Random;
-import java.io.*;
+import java.awt.event.*;
 
 public class Main extends JPanel implements MouseListener{
     int width = width();
@@ -47,15 +45,6 @@ public class Main extends JPanel implements MouseListener{
         frame.add(background);
         frame.setVisible(true);
         frame.setResizable(false);
-        try{
-            File file = new File("score.txt");
-            FileWriter fw = new FileWriter(file,false);
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write("");
-            bw.close();
-        }catch(IOException e){
-            System.out.println(e);
-        }
     }
 
     public void paintComponent(Graphics g){
@@ -70,12 +59,12 @@ public class Main extends JPanel implements MouseListener{
 
         g.setColor(Color.YELLOW);
         g.fillRect(width/2-120,height/2+60,90,30);//tutorial button
-        g.fillRect(width/2+24,height/2+60,105,30);//scores button
+        g.fillRect(width/2+24,height/2+60,90,30);//scores button
         g.fillRect(width/2-100,height/2-40,200,80);//play button
 
         g.setColor(Color.BLACK);
         g.drawString("CONTROLS", width/2-110, height/2+80);//tutorial
-        g.drawString("LOCAL SCORES", width/2+30, height/2+80);//scores
+        g.drawString("SCORES", width/2+43, height/2+80);//scores
         g.setFont(new Font("Arial", Font.PLAIN, 30));//play button text
         g.drawString("PLAY", width/2-40, height/2+10);
     }
