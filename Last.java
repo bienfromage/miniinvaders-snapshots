@@ -18,11 +18,34 @@ public class Last extends JPanel implements MouseListener{
     public void mouseClicked(MouseEvent e){
         int x = e.getX();
         int y = e.getY();
-        if(x > width/2-100 && x<width/2+100 && y > height/2-40 && y < height/2+40){
+        if(x > width/2-100 && x<width/2+100&&y>height/2+60&&y<height/2+90){
+            try{
+                File file = new File("score.txt");
+                FileWriter fw = new FileWriter(file,true);
+                BufferedWriter bw = new BufferedWriter(fw);
+                bw.write(player1 +" vs "+player2);
+                bw.newLine();
+                bw.write(player1 +": "+score1);
+                bw.newLine();
+                bw.write(player2+": "+score2);
+                bw.newLine();
+                bw.newLine();
+
+                bw.close();
+            }catch(IOException i){
+                System.out.println(e);
+            }
+            score1 = "0";
+            score2 = "0";
+            repaint();
+        }else if(x > width/2-100 && x<width/2+100&&y>height/2+110&&y<height/2+140){
+            String[] arguments = new String[]{player1,player2,score1,score2};
+            Online.main(arguments);
+        }else if(x > width/2-100 && x<width/2+100 && y > height/2-40 && y < height/2+40){
             frame.dispose();
             String[] arguments = new String[]{player1,player2,score1,score2};
             BattleGround.main(arguments);
-        }    
+        }
     }
 
     public void mouseEntered(MouseEvent e) {}
@@ -38,7 +61,7 @@ public class Last extends JPanel implements MouseListener{
         player2 = args[1];
         score1 = args[2];
         score2 = args[3];
-        
+
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Last background = new Last();
         frame = new JFrame("MiniInvaders 0.0");
@@ -60,14 +83,14 @@ public class Last extends JPanel implements MouseListener{
         }
 
         g.setColor(Color.YELLOW);
-        g.fillRect(width/2-120,height/2+60,90,30);//tutorial button
-        g.fillRect(width/2+24,height/2+60,105,30);//scores button
-        g.fillRect(width/2-100,height/2-40,200,80);//play button
-        
+        g.fillRect(width/2-100,height/2+60,200,30);//save locally
+        g.fillRect(width/2-100,height/2+110,200,30);//save online
+        g.fillRect(width/2-100,height/2-40,200,80);//replay button
+
         g.setColor(Color.BLACK);
-        g.drawString("CONTROLS", width/2-110, height/2+80);//tutorial
-        g.drawString("END MATCH", width/2+40, height/2+80);//scores
-        g.setFont(new Font("Arial", Font.PLAIN, 20));//play button text
+        g.drawString("FINISH & SAVE LOCALLY", width/2-65, height/2+80);//save locally
+        g.drawString("FINISH & SAVE ONLINE", width/2-60, height/2+130);//save online
+        g.setFont(new Font("Arial", Font.PLAIN, 20));//replay button text
         g.drawString("PLAY AGAIN", width/2-55, height/2+10);
         g.setColor(Color.YELLOW);
         g.setFont(new Font("Arial", Font.PLAIN, 30));
