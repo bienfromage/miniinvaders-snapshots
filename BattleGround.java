@@ -17,7 +17,6 @@ public class BattleGround extends JPanel implements ActionListener{
     static JFrame frame;
     static String player1,player2,score1,score2;
     int timepassed = 0;
-    Clip clip;
     Timer tm = new Timer(5, this);
     static String startTime;
     int humanX = 100, velHumanX = 0, humanY = 100, velHumanY = 0, humanHeight = 0, humanWidth = 0, humanDeathSequence = 0;
@@ -51,25 +50,7 @@ public class BattleGround extends JPanel implements ActionListener{
             alienImage = ImageIO.read(resource2);
         }catch(IOException e){
             System.out.println("This file was improperly installed.\nResource \'" + resource2 + "\' not found.");
-        }
-
-        try {
-            // Open an audio input stream.
-            URL url = this.getClass().getClassLoader().getResource("237089__foolboymedia__race-track.wav");
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
-            // Get a sound clip resource.
-            clip = AudioSystem.getClip();
-            // Open audio clip and load samples from the audio input stream.
-            clip.open(audioIn);
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("The music files for this game were improperly installed");
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-        }        
+        }    
 
         humanHeight = humanImage.getHeight();
         humanWidth = humanImage.getWidth();
@@ -355,7 +336,7 @@ public class BattleGround extends JPanel implements ActionListener{
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         BattleGround battlescreen = new BattleGround();
-        frame = new JFrame("MiniInvaders 0.0");
+        frame = new JFrame("MiniInvaders");
         frame.setSize(screenSize);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(battlescreen);
@@ -402,13 +383,16 @@ public class BattleGround extends JPanel implements ActionListener{
             if(alienDeathSequence > 400 && !humanDied){
                 int score = Integer.parseInt(score1);
                 score=score+10000-timepassed;
+                if(score<0)
+                    score = 0;
                 score1 = Integer.toString(score);
             }else if(humanDeathSequence > 400 && !alienDied){
                 int score = Integer.parseInt(score2);
                 score=score+10000-timepassed;
+                if(score<0)
+                    score = 0;
                 score2 = Integer.toString(score);
             }
-            clip.stop();
             frame.dispose();
             String[] arguments = new String[]{player1,player2,score1,score2};
             Last.main(arguments);
