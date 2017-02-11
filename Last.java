@@ -35,10 +35,10 @@ public class Last extends JPanel implements MouseListener{
             }catch(IOException i){
                 System.out.println(e);
             }
-            score1 = "0";
-            score2 = "0";
-            repaint();
+            JOptionPane.showMessageDialog(null,"Scores recorded locally");
+            System.exit(0);
         }else if(x > width/2-100 && x<width/2+100&&y>height/2+110&&y<height/2+140){
+            frame.dispose();
             String[] arguments = new String[]{player1,player2,score1,score2};
             Online.main(arguments);
         }else if(x > width/2-100 && x<width/2+100 && y > height/2-40 && y < height/2+40){
@@ -64,7 +64,7 @@ public class Last extends JPanel implements MouseListener{
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Last background = new Last();
-        frame = new JFrame("MiniInvaders 0.0");
+        frame = new JFrame("MiniInvaders");
         frame.setSize(screenSize);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   
         frame.add(background);
