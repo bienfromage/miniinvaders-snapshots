@@ -2,6 +2,9 @@ import java.awt.*;
 import javax.swing.*;
 import java.util.Random;
 import java.awt.event.*;
+import java.io.*;
+import java.net.*;
+import javax.sound.sampled.*;
 
 public class Main extends JPanel implements MouseListener{
     int width = width();
@@ -10,6 +13,23 @@ public class Main extends JPanel implements MouseListener{
 
     public Main(){
         addMouseListener(this);
+        try {
+            // Open an audio input stream.
+            URL url = this.getClass().getClassLoader().getResource("237089__foolboymedia__race-track.wav");
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(url);
+            // Get a sound clip resource.
+            Clip clip = AudioSystem.getClip();
+            // Open audio clip and load samples from the audio input stream.
+            clip.open(audioIn);
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("The music files for this game were improperly installed");
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }    
     }
 
     public void mouseClicked(MouseEvent e){
@@ -25,7 +45,13 @@ public class Main extends JPanel implements MouseListener{
                     BattleGround.main(arguments);
                 }
             }
-        }    
+        }else if(x>width/2-120&&x<width/2-30&&y>height/2+60&&y<height/2+90){
+            String[] arguments = new String[]{};
+            Tutorial.main(arguments);
+        }else if(x>width/2+24&&x<width/2+114&&y>height/2+60&&y<height/2+90){
+            String[] arguments = new String[]{};
+            Scoreboard.main(arguments);            
+        }
     }
 
     public void mouseEntered(MouseEvent e) {}
@@ -39,7 +65,7 @@ public class Main extends JPanel implements MouseListener{
     public static void main(String[] args){
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Main background = new Main();
-        frame = new JFrame("MiniInvaders 0.0");
+        frame = new JFrame("MiniInvaders");
         frame.setSize(screenSize);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   
         frame.add(background);
